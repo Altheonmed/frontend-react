@@ -1,7 +1,7 @@
 // Fichier : src/App.tsx
 
 import { useState } from 'react';
-import { BrowserRouter as Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header';
 import Register from './components/Register';
 // ⚠️ ATTENTION : Login est désormais inclus dans Home
