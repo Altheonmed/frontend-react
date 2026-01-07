@@ -1,0 +1,27 @@
+/* src/index.css */
+
+/* Réinitialisation de base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Assurer que les éléments racine (HTML, body, et le conteneur React #root) occupent toute la hauteur disponible */
+html,
+body,
+#root {
+  height: 100%;
+}
+
+/* Le conteneur principal de l'application doit aussi prendre toute la hauteur */
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Permettre au contenu principal de l'application de s'étendre et de prendre l'espace restant */
+main {
+  flex-grow: 1;
+}

@@ -1,0 +1,126 @@
+/*=====================================
+  Styles pour les pages de texte long
+  (Forum, Notes, etc.)
+=====================================*/
+
+/* --- Conteneur de la page --- */
+.text-page-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    line-height: 1.7; /* Améliore la lisibilité des paragraphes */
+    color: #333;
+}
+
+/* --- Titre de la page --- */
+.page-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.page-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #004d40;
+    margin: 0;
+}
+
+/* --- Style des sections de contenu (ex: un sujet de forum, une note) --- */
+.content-section {
+    background-color: #f8f9fa;
+    border-left: 5px solid #00796b;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border-radius: 8px;
+}
+
+.content-section h2 {
+    font-size: 1.8rem;
+    color: #00796b;
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+.content-section p {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* --- Style pour les citations ou blocs de texte mis en évidence --- */
+.quote-block {
+    border-left: 4px solid #ccc;
+    padding-left: 1.25rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: #555;
+}
+
+/* --- Style pour les listes (ordonnées et non ordonnées) --- */
+ul, ol {
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+}
+
+li {
+    margin-bottom: 0.5rem;
+}
+
+/* --- Pied de section (informations sur l'auteur, la date) --- */
+.section-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.9rem;
+    color: #777;
+    margin-top: 1rem;
+}
+
+.author, .date {
+    font-weight: 600;
+}
+
+/* --- Séparateur entre les entrées (ex: entre les réponses d'un forum) --- */
+.separator {
+    border-top: 1px dashed #ddd;
+    margin: 2rem 0;
+}
+
+/* --- Styles pour les boutons et liens dans le contenu --- */
+.content-button {
+    background-color: #00796b;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.content-button:hover {
+    background-color: #004d40;
+}
+
+/* --- Responsive design pour une meilleure lisibilité sur mobile --- */
+@media (max-width: 768px) {
+    .text-page-container {
+        padding: 1rem;
+        margin: 1rem;
+    }
+    
+    .page-header h1 {
+        font-size: 2rem;
+    }
+    
+    .content-section {
+        padding: 1rem;
+    }
+}

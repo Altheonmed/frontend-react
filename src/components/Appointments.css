@@ -1,0 +1,122 @@
+/* Fichier : src/components/Appointments.css */
+
+/* Style pour la page des rendez-vous en général */
+.appointments-page {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+}
+
+/* Conteneur principal du calendrier et des boutons */
+.calendar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+/* Style de base du calendrier si nécessaire */
+.react-calendar {
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 10px;
+}
+
+/* Style pour les tuiles de date qui ont un rendez-vous */
+.react-calendar__tile.has-appointment {
+    background-color: #d1f7e0 !important; /* Vert clair pour la couleur de fond */
+    color: #004d40; /* Couleur du texte pour un bon contraste */
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.react-calendar__tile.has-appointment:hover {
+    background-color: #a8e6cf !important; /* Une nuance plus foncée au survol */
+}
+
+
+/* Styles pour les boutons "Créer un rendez-vous" et "Voir les rendez-vous supprimés" */
+.create-appt-button,
+.view-deleted-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.create-appt-button {
+    background-color: #00796b;
+    color: white;
+}
+
+.create-appt-button:hover {
+    background-color: #004d40;
+    transform: translateY(-2px);
+}
+
+.view-deleted-button {
+    background-color: #c0c0c0;
+    color: #333;
+}
+
+.view-deleted-button:hover {
+    background-color: #a0a0a0;
+    transform: translateY(-2px);
+}
+
+/* Liste des rendez-vous */
+.appointments-list {
+    text-align: left;
+}
+
+.appointment-item {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.appointment-item p {
+    margin: 5px 0;
+}
+
+.appointment-actions {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+/* Boutons d'action */
+.action-button {
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.edit-button {
+    background-color: #2196f3;
+    color: white;
+}
+
+.edit-button:hover {
+    background-color: #1976d2;
+}
+
+.delete-button {
+    background-color: #f44336;
+    color: white;
+}
+
+.delete-button:hover {
+    background-color: #d32f2f;
+}

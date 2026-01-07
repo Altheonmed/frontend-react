@@ -1,0 +1,132 @@
+/* Le conteneur principal qui prend toute la hauteur de l'écran */
+.auth-page-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; 
+  min-height: 100vh; 
+  background-color: #f0f2f5; 
+  padding-top: 0; 
+}
+
+/* Le conteneur blanc du formulaire (la "carte") */
+.auth-container {
+  width: 100%;
+  max-width: 450px; 
+  /* 💡 Padding minimal pour le conteneur */
+  padding: 1.25rem 2.5rem; 
+  background-color: white;
+  border-radius: 12px; 
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); 
+  text-align: center;
+  margin: 1rem auto; 
+  transition: all 0.3s ease;
+}
+
+/* --- NOUVEAU STYLE DE TITRE (SANS ICÔNE) --- */
+.login-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2c3e50; 
+  /* Marge minimale au-dessus du formulaire */
+  margin-top: 0; 
+  margin-bottom: 1rem; 
+}
+
+/* Suppression des styles inutiles pour l'icône */
+/* .auth-header, .login-icon ne sont plus nécessaires */
+
+/* --- Le formulaire --- */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem; 
+}
+
+.form-group {
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.3rem; 
+  color: #495057;
+  font-size: 0.95rem; 
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.7rem; 
+  border: 1px solid #ced4da; 
+  border-radius: 8px; 
+  box-sizing: border-box;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  font-size: 1rem;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #16a34a; 
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.2); 
+}
+
+/* Bouton de soumission */
+.login-button { 
+  padding: 0.8rem 1.5rem; 
+  margin-top: 0.6rem; 
+  background-color: #16a34a; 
+  color: white;
+  border: none;
+  border-radius: 8px; 
+  cursor: pointer;
+  font-size: 1rem; 
+  font-weight: 600;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.1s ease;
+  box-shadow: 0 4px 10px rgba(22, 163, 74, 0.2); 
+}
+
+.login-button:hover:not(:disabled) {
+  background-color: #15803d; 
+  box-shadow: 0 6px 15px rgba(22, 163, 74, 0.3);
+  transform: translateY(-1px);
+}
+
+.login-button:disabled {
+    background-color: #aeb5c2;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+/* Messages d'erreur */
+.error-message {
+  color: #dc2626; 
+  background-color: #fee2e2; 
+  border: 1px solid #dc2626;
+  padding: 8px; 
+  border-radius: 8px; 
+  margin-bottom: 0.8rem; 
+  font-size: 0.9rem; 
+  text-align: center;
+}
+
+/* Lien d'inscription */
+.register-link-text {
+  /* Marge minimale après le bouton */
+  margin-top: 1rem; 
+  color: #6c757d;
+  font-size: 0.95rem; 
+}
+
+.register-link-text a {
+  color: #16a34a; 
+  text-decoration: none;
+  font-weight: 700;
+  transition: color 0.3s ease;
+}
+
+.register-link-text a:hover {
+  color: #15803d; 
+  text-decoration: underline;
+}

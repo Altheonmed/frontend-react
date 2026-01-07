@@ -1,0 +1,292 @@
+/*=====================================
+    Styles pour les vues de détails
+    (PatientDetail, AppointmentDetail, etc.)
+=====================================*/
+
+/* --- Conteneur principal de détails --- */
+.detail-container {
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin: 30px auto;
+    max-width: 900px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- En-tête de la page de détails --- */
+.detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 15px;
+}
+
+.detail-header h1, .detail-header h2 {
+    color: #004d40;
+    font-size: 2.2rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* --- Titre du patient --- */
+.patient-name {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0;
+    text-align: left;
+    word-break: break-word;
+}
+
+/* --- Groupes d'informations --- */
+.detail-info-group {
+    margin-bottom: 25px;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.detail-info-group:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.detail-info-group h3 {
+    color: #00796b;
+    font-size: 1.5rem;
+    margin-top: 0;
+    border-bottom: 1px solid #b2dfdb;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.info-item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.info-item strong {
+    color: #444;
+    min-width: 150px;
+    font-weight: 600;
+    margin-right: 10px;
+}
+
+/* --- Listes de détails (consultations, procédures, etc.) --- */
+.detail-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.detail-list-item {
+    background-color: #f0f8ff;
+    border: 1px solid #cce7ff;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.detail-list-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.detail-list-item p {
+    margin: 5px 0;
+    line-height: 1.6;
+}
+
+.detail-list-item strong {
+    color: #004d40;
+}
+
+/* --- Styles des boutons d'action --- */
+.patient-actions, .appointment-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.entry-actions {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+
+.action-button {
+  padding: 8px 16px; /* Ajuste le padding (rembourrage) interne des boutons */
+  font-size: 14px; /* Réduit la taille de la police du texte des boutons */
+  /* Vous pouvez aussi ajuster les marges si nécessaire */
+  margin: 5px; 
+}
+
+.edit-button, .delete-button,
+.add-consultation-button, .add-procedure-button,
+.export-pdf-button, .create-appt-button, .view-deleted-button,
+.edit-profile-button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.action-button:hover, .edit-button:hover, .delete-button:hover,
+.add-consultation-button:hover, .add-procedure-button:hover,
+.export-pdf-button:hover, .create-appt-button:hover,
+.view-deleted-button:hover, .edit-profile-button:hover {
+    filter: brightness(0.9);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Couleurs des boutons (harmonisation) */
+.action-button:nth-child(1), .add-consultation-button, .create-appt-button { background-color: #00796b; color: white; }
+.action-button:nth-child(2), .add-procedure-button { background-color: #42a5f5; color: white; }
+.action-button:nth-child(3), .edit-profile-button { background-color: #3b82f6; color: white; }
+.action-button:nth-child(4), .export-pdf-button, .view-deleted-button { background-color: #fdd835; color: #333; }
+.edit-button { background-color: #00796b; color: white; }
+.delete-button { background-color: #d32f2f; color: white; }
+
+/* --- Styles du calendrier --- */
+.calendar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 25px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.react-calendar {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    max-width: 100%;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.react-calendar button {
+    border: none;
+    background: none;
+    padding: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.react-calendar__navigation button {
+    font-size: 1.2rem;
+    color: #004d40;
+}
+
+.react-calendar__tile {
+    padding: 12px;
+}
+
+.react-calendar__tile--active,
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+    background: #00796b;
+    color: white;
+    border-radius: 8px;
+}
+
+.react-calendar__tile--now {
+    background: #e0f2f1;
+    color: #004d40;
+    font-weight: bold;
+}
+
+.react-calendar__tile--range,
+.react-calendar__tile--range:enabled:hover {
+    background-color: #b2dfdb;
+    color: #004d40;
+}
+
+/* --- Autres styles (messages, etc.) --- */
+.loading-message,
+.error-message,
+.no-data-message,
+.no-profile-data {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 1.125rem;
+    color: #4b5563;
+}
+
+.error-message {
+    color: #d32f2f;
+    font-weight: bold;
+}
+
+/* CLASSE POUR CACHER LES ÉLÉMENTS PENDANT L'EXPORTATION PDF */
+.hide-for-pdf {
+    display: none !important;
+}
+
+/* --- Responsive design pour les petits écrans --- */
+@media (max-width: 768px) {
+    .detail-container {
+        padding: 20px;
+        margin: 20px;
+    }
+
+    .detail-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .detail-header h1, .detail-header h2 {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+    }
+
+    .patient-actions, .appointment-actions, .entry-actions {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+    }
+
+    .action-button, .add-consultation-button, .add-procedure-button,
+    .export-pdf-button, .create-appt-button, .view-deleted-button,
+    .edit-button, .delete-button, .edit-profile-button {
+        width: 100%;
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+
+    .info-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .info-item strong {
+        min-width: auto;
+        margin-bottom: 5px;
+    }
+}

@@ -1,0 +1,187 @@
+/*=====================================
+  Styles pour le Tableau de Bord
+  (Dashboard.tsx)
+=====================================*/
+
+/* --- Conteneur principal de la page --- */
+.dashboard-container,
+.text-page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    padding: 2rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5;
+    text-align: center;
+}
+
+/* --- Section principale du contenu --- */
+.dashboard-content,
+.content-section {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 3rem;
+    max-width: 900px;
+    width: 100%;
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Titre de bienvenue --- */
+.dashboard-content h2 {
+    font-size: 2.2rem;
+    color: #004d40;
+    margin-bottom: 1rem;
+}
+
+/* --- Section des statistiques (horizontal) --- */
+.stats-summary {
+    display: flex;
+    justify-content: center; /* Centrer les cartes */
+    flex-wrap: wrap;
+    margin: 1.5rem 0; /* Espacement réduit */
+    gap: 1.2rem; /* Espacement réduit entre les cartes */
+    width: 100%;
+}
+
+.stat-card {
+    background-color: #e0f2f1;
+    padding: 1.2rem 1.5rem; /* Réduction du padding */
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    min-width: 130px; /* Réduction de la largeur minimale */
+    text-align: center;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.stat-value {
+    font-size: 2.2rem; /* Légère réduction de la taille de la police */
+    font-weight: 700;
+    color: #004d40;
+    margin: 0;
+}
+
+.stat-label {
+    font-size: 0.9rem; /* Légère réduction de la taille de la police */
+    color: #00796b;
+    margin-top: 0.5rem;
+    font-weight: 600;
+}
+
+/* --- Paragraphe de description --- */
+.dashboard-content p {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+/* --- Navigation du tableau de bord --- */
+.dashboard-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+/* --- Boutons de navigation --- */
+.nav-button {
+    background-color: #00796b;
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    box-shadow: 0 4px 10px rgba(0, 121, 107, 0.2);
+}
+
+.nav-button:hover {
+    background-color: #004d40;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* --- Styles pour les messages de chargement et d'erreur --- */
+.loading-text, .error-text {
+    font-size: 1.1rem;
+    color: #757575;
+    margin-top: 1rem;
+}
+
+.error-text {
+    color: #d32f2f;
+}
+
+/* --- Styles pour le tableau des statistiques patients --- */
+.patients-stats-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.patients-stats-table th,
+.patients-stats-table td {
+    border: 1px solid #e0e0e0;
+    padding: 12px 15px;
+    text-align: left;
+}
+
+.patients-stats-table th {
+    background-color: #f5f5f5;
+    font-weight: 600;
+    color: #333;
+    text-transform: uppercase;
+}
+
+.patients-stats-table tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+.patients-stats-table tr:hover {
+    background-color: #e8f5e9;
+}
+
+
+/* --- Responsive design --- */
+@media (max-width: 768px) {
+    .dashboard-content,
+    .content-section {
+        padding: 2rem;
+        max-width: 100%;
+    }
+    
+    .dashboard-content h2 {
+        font-size: 1.8rem;
+    }
+
+    .stats-summary {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .stat-card {
+        width: 80%; /* Prend plus de largeur sur mobile */
+        text-align: center;
+    }
+
+    .nav-button {
+        width: 100%;
+        text-align: center;
+    }
+}
