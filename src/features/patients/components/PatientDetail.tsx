@@ -33,8 +33,9 @@ import MedicationsTab from './tabs/MedicationsTab';
 import MedicalActTab from './tabs/MedicalActTab';
 import HistoryTab from './tabs/HistoryTab';
 import PortalTab from './tabs/PortalTab';
+import CertificatesTab from './tabs/CertificatesTab';
 
-type Tab = 'overview' | 'consultations' | 'labs' | 'medications' | 'medical_act' | 'history' | 'portal';
+type Tab = 'overview' | 'consultations' | 'labs' | 'medications' | 'medical_act' | 'certificates' | 'history' | 'portal';
 
 interface VitalsPoint {
     id: number;
@@ -580,7 +581,7 @@ const PatientDetails = () => {
         const tabParam = searchParams.get('tab') as Tab | null;
         const openConsultId = searchParams.get('open_consultation');
 
-        const validTabs: Tab[] = ['overview', 'consultations', 'labs', 'medications', 'medical_act', 'history', 'portal'];
+        const validTabs: Tab[] = ['overview', 'consultations', 'labs', 'medications', 'medical_act', 'certificates', 'history', 'portal'];
         if (tabParam && validTabs.includes(tabParam)) {
             handleTabChange(tabParam);
         }
@@ -995,6 +996,7 @@ const PatientDetails = () => {
         { key: 'labs',          label: t('patient_detail.tabs.labs', 'Labs'),                    count: pendingLabOrderCount || undefined },
         { key: 'medications',   label: t('patient_detail.tabs.medications', 'Medications'),     count: medications.length || undefined },
         { key: 'medical_act',   label: t('patient_detail.tabs.medical_act', 'Medical Act'),    count: medicalActCount },
+        { key: 'certificates',  label: t('patient_detail.tabs.certificates', 'Certificates') },
         { key: 'history',       label: t('patient_detail.tabs.history', 'History'),             count: historyCount },
         { key: 'portal',        label: t('patient_detail.tabs.portal', 'Portal'),                count: pendingRequests.length || undefined },
     ];
@@ -1325,6 +1327,9 @@ const PatientDetails = () => {
                         openThreadReferralId={openThreadReferralId}
                         setOpenThreadReferralId={setOpenThreadReferralId}
                     />
+                )}
+                {activeTab === 'certificates' && (
+                    <CertificatesTab patientId={id!} canWrite={canWrite} />
                 )}
                 {activeTab === 'history' && (
                     <HistoryTab

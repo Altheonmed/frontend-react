@@ -8,9 +8,10 @@ import PatientMedications from './PatientMedications';
 import PatientConditions from './PatientConditions';
 import PatientAllergies from './PatientAllergies';
 import PatientReferrals from './PatientReferrals';
+import PatientCertificates from './PatientCertificates';
 import './PatientHealthRecord.css';
 
-const TABS = ['visits', 'labs', 'medications', 'conditions', 'referrals'] as const;
+const TABS = ['visits', 'labs', 'medications', 'conditions', 'referrals', 'certificates'] as const;
 type Tab = typeof TABS[number];
 
 export default function PatientHealthRecord() {
@@ -59,6 +60,7 @@ export default function PatientHealthRecord() {
                     </div>
                 )}
                 {activeTab === 'referrals' && <PatientReferrals asTab />}
+                {activeTab === 'certificates' && <PatientCertificates asTab />}
             </div>
         </>
     );

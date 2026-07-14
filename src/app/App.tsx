@@ -20,6 +20,7 @@ import CompleteProfile from '../features/auth/components/CompleteProfile';
 import PendingApproval from '../features/auth/components/PendingApproval';
 import ForgotPassword from '../features/auth/components/ForgotPassword';
 import ResetPassword from '../features/auth/components/ResetPassword';
+import VerifyCertificatePage from '../features/certificates/VerifyCertificatePage';
 
 // Admin components
 import AdminSidebar from '../features/admin/components/AdminSidebar';
@@ -168,6 +169,7 @@ function App() {
             <div className="App">
                 <Suspense fallback={<PageLoader message="Loading" />}>
                     <Routes>
+                        <Route path="/verify-certificate/:code?" element={<VerifyCertificatePage />} />
                         <Route path="/admin/*" element={<PrivateAdminRoutes />} />
                         <Route path="/"        element={<Navigate to="/admin/dashboard" replace />} />
                         <Route path="*"        element={<Navigate to="/admin/dashboard" replace />} />
@@ -205,6 +207,7 @@ function App() {
                                 <Route path="/patient/conditions"   element={<Navigate to="/patient/health?tab=conditions"   replace />} />
                                 <Route path="/patient/allergies"    element={<Navigate to="/patient/health?tab=conditions"   replace />} />
                                 <Route path="/patient/referrals"    element={<Navigate to="/patient/health?tab=referrals"    replace />} />
+                                <Route path="/patient/certificates" element={<Navigate to="/patient/health?tab=certificates" replace />} />
                                 <Route path="/patient/profile"      element={<Navigate to="/patient/account?tab=profile"     replace />} />
                                 <Route path="/patient/settings"     element={<Navigate to="/patient/account?tab=settings"    replace />} />
                                 {/* Access permission consolidated the old clinic-code + access-requests pages */}
@@ -221,6 +224,7 @@ function App() {
                         <Route path="/patient/forgot-password"   element={<PatientForgotPassword />} />
                         <Route path="/patient/reset-password"    element={<PatientResetPassword />} />
                         {/* Public legal pages */}
+                        <Route path="/verify-certificate/:code?" element={<VerifyCertificatePage />} />
                         <Route path="/terms"   element={<LegalPage doc="terms" />} />
                         <Route path="/privacy" element={<LegalPage doc="privacy" />} />
                         <Route path="/cookies" element={<LegalPage doc="cookies" />} />
@@ -248,6 +252,7 @@ function App() {
                     <Route path="/forgot-password" element={<ForgotPassword />} />
                     <Route path="/reset-password"  element={<ResetPassword />} />
                     {/* Public legal pages — opened from registration consent links */}
+                    <Route path="/verify-certificate/:code?" element={<VerifyCertificatePage />} />
                     <Route path="/terms"   element={<LegalPage doc="terms" />} />
                     <Route path="/privacy" element={<LegalPage doc="privacy" />} />
                     <Route path="/cookies" element={<LegalPage doc="cookies" />} />
