@@ -351,6 +351,14 @@ export interface Referral {
     specialty_display?: string;
     reason_for_referral: string;
     attached_documents: string | null;
+    file_attachments?: Array<{
+        id: number;
+        original_filename: string;
+        file_size: number | null;
+        mime_type: string;
+        download_url: string | null;
+        created_at: string;
+    }>;
     date_of_referral: string;
     comments: string | null;
     // Classification

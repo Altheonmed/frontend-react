@@ -10,6 +10,7 @@ import ReferralMessageThread from '../../../referrals/components/ReferralMessage
 import ReferralSnapshotView from '../../../referrals/components/ReferralSnapshotView';
 import ReferralEventTimeline from '../../../referrals/components/ReferralEventTimeline';
 import ReferralSLABadge from '../../../referrals/components/ReferralSLABadge';
+import AttachmentList from '../../../../shared/components/AttachmentList';
 
 interface MedicalActTabProps {
     patient: PatientWithHistory;
@@ -225,6 +226,12 @@ const MedicalActTab = ({
                                         <div className="info-item"><strong>{t('medical_act.referrals.urgency', 'Urgency')}:</strong> {r.urgency_display || r.urgency}</div>
                                         <div className="info-item"><strong>{t('medical_act.referrals.reason', 'Reason')}:</strong> {r.reason_for_referral}</div>
                                         {r.comments && <div className="info-item"><strong>{t('medical_act.referrals.note', 'Referral note')}:</strong> {r.comments}</div>}
+                                        {r.file_attachments && r.file_attachments.length > 0 && (
+                                            <div className="info-item">
+                                                <strong>{t('referrals.list.card.attachments')}:</strong>
+                                                <AttachmentList attachments={r.file_attachments} style={{ marginTop: '0.25rem' }} />
+                                            </div>
+                                        )}
 
                                         <div className="info-item" style={{ fontSize: '0.78rem', color: 'var(--text-muted)', display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginTop: '0.25rem' }}>
                                             {r.accepted_at && <span>{t('medical_act.referrals.event.accepted', 'Accepted')} {formatDate(r.accepted_at)}</span>}

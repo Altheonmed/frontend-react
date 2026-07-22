@@ -55,7 +55,7 @@ const ReferralForm = ({
     const [doctors, setDoctors] = useState<DoctorProfile[]>([]);
     const [specialtyFilter, setSpecialtyFilter] = useState('');
     const [acceptingOnly, setAcceptingOnly] = useState(true);
-    const [attachmentFile, setAttachmentFile] = useState<File | null>(null);
+    const [attachmentFiles, setAttachmentFiles] = useState<File[]>([]);
     const [specialtyAutoFilled, setSpecialtyAutoFilled] = useState(false);
 
     const isEditing     = !!referralToEdit;
@@ -85,7 +85,15 @@ const ReferralForm = ({
     const filterTimerRef   = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        setAttachmentFile(e.target.files?.[0] ?? null);
+        const picked = Array.from(e.target.files ?? []);
+        // Append rather than replace, so files can be added over several picks.
+        if (picked.length) setAttachmentFiles(prev => [...prev, ...picked]);
+        // Clear the input so re-picking a just-removed file still fires onChange.
+        e.target.value = '';
+    }, []);
+
+    const removeAttachment = useCallback((index: number) => {
+        setAttachmentFiles(prev => prev.filter((_, i) => i !== index));
     }, []);
 
     const fetchDoctors = async (specialty?: string, accepting?: boolean) => {
@@ -181,7 +189,8 @@ const ReferralForm = ({
             if (key === 'is_draft') return; // handled separately
             if (value != null && value !== '') fd.append(key, String(value));
         });
-        if (attachmentFile) fd.append('attached_documents', attachmentFile);
+        // Repeated key — the serializer reads them all via request.FILES.getlist().
+        attachmentFiles.forEach(file => fd.append('attached_documents', file));
         return fd;
     };
 
@@ -417,9 +426,26 @@ const ReferralForm = ({
                     <input
                         type="file" id="attached_documents" className="input"
                         accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                        multiple
                         onChange={handleFileChange}
                     />
-                    {attachmentFile && <small className="form-hint">{attachmentFile.name}</small>}
+                    {attachmentFiles.length > 0 && (
+                        <ul className="attachment-pending-list">
+                            {attachmentFiles.map((file, index) => (
+                                <li key={`${file.name}-${index}`}>
+                                    <span className="attachment-pending-name">{file.name}</span>
+                                    <button
+                                        type="button"
+                                        className="btn btn-ghost btn-sm"
+                                        onClick={() => removeAttachment(index)}
+                                        aria-label={t('referrals.form.attachment_remove', { name: file.name })}
+                                    >
+                                        &times;
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
                 </div>
 
                 {/* Returned banner — show what specialist asked for */}

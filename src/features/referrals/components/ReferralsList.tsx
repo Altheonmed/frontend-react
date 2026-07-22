@@ -12,6 +12,7 @@ import { queryKeys } from '../../../shared/queryKeys';
 import { PageHeader } from '../../../shared/components/PageHeader';
 import { StatusBadge } from '../../../shared/components/StatusBadge';
 import { TabSkeleton } from '../../../shared/components/SectionCard';
+import AttachmentList from '../../../shared/components/AttachmentList';
 import { Modal, toast } from '../../../shared/components/ui';
 import { useFormatDateTime } from '../../../shared/hooks/useUserTimezone';
 import ReferralForm from './ReferralForm';
@@ -691,6 +692,16 @@ const ReferralsList = () => {
 
                                 {referral.reason_for_referral && (
                                     <p className="card-reason">{referral.reason_for_referral}</p>
+                                )}
+
+                                {/* Attached documents — visible to both the referring and the receiving doctor */}
+                                {referral.file_attachments && referral.file_attachments.length > 0 && (
+                                    <div style={{ marginTop: '0.5rem' }}>
+                                        <div className="card-meta" style={{ marginBottom: '0.25rem' }}>
+                                            {t('referrals.list.card.attachments')}
+                                        </div>
+                                        <AttachmentList attachments={referral.file_attachments} />
+                                    </div>
                                 )}
 
                                 {/* Linked appointment badge */}
