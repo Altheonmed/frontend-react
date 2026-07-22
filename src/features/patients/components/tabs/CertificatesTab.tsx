@@ -26,6 +26,7 @@ export interface MedicalCertificate {
     leave_end_date: string | null;
     fitness_statement: string;
     remarks: string;
+    place_of_issue: string;
     serial_number: string;
     verify_code: string;
     voided_at: string | null;
@@ -52,6 +53,7 @@ interface Draft {
     custom_days: string;
     fitness_statement: string;
     remarks: string;
+    place_of_issue: string;
     visible_to_patient: boolean;
     replaces: number | null;
 }
@@ -65,6 +67,7 @@ const emptyDraft = (): Draft => ({
     custom_days: '',
     fitness_statement: 'fit_for_work',
     remarks: '',
+    place_of_issue: '',
     visible_to_patient: true,
     replaces: null,
 });
@@ -98,6 +101,7 @@ export function CertificatesTab({ patientId, canWrite }: { patientId: string; ca
                 examination_date: draft.examination_date,
                 diagnosis: draft.diagnosis,
                 remarks: draft.remarks,
+                place_of_issue: draft.place_of_issue,
                 visible_to_patient: draft.visible_to_patient,
             };
             if (draft.replaces) payload.replaces = draft.replaces;
@@ -145,15 +149,18 @@ export function CertificatesTab({ patientId, canWrite }: { patientId: string; ca
             custom_days: cert.leave_days && !LEAVE_PRESETS.includes(cert.leave_days) ? String(cert.leave_days) : '',
             fitness_statement: cert.fitness_statement || 'fit_for_work',
             remarks: cert.remarks,
+            place_of_issue: cert.place_of_issue,
             visible_to_patient: cert.visible_to_patient,
             replaces: cert.id,
         });
         setShowForm(true);
     };
 
-    const downloadPdf = async (cert: MedicalCertificate) => {
+    // The PDF prints both languages; `lang` only decides which one leads.
+    const downloadPdf = async (cert: MedicalCertificate, lang?: 'en' | 'fr') => {
         try {
-            const res = await api.get(`/certificates/${cert.id}/pdf/`, { responseType: 'blob' });
+            const path = `/certificates/${cert.id}/pdf/${lang ? `?lang=${lang}` : ''}`;
+            const res = await api.get(path, { responseType: 'blob' });
             const url = window.URL.createObjectURL(new Blob([res.data], { type: 'application/pdf' }));
             const a = document.createElement('a');
             a.href = url;
@@ -262,6 +269,12 @@ export function CertificatesTab({ patientId, canWrite }: { patientId: string; ca
                         value={draft.remarks}
                         onChange={e => setDraft({ ...draft, remarks: e.target.value })}
                     />
+                    <input
+                        className="form-input" style={{ marginTop: 8 }}
+                        placeholder={t('certificates.form.place', 'Place of issue (defaults to your practice city)')}
+                        value={draft.place_of_issue}
+                        onChange={e => setDraft({ ...draft, place_of_issue: e.target.value })}
+                    />
                     <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.85rem', marginTop: 8 }}>
                         <input
                             type="checkbox" checked={draft.visible_to_patient}
@@ -309,8 +322,11 @@ export function CertificatesTab({ patientId, canWrite }: { patientId: string; ca
                             )}
                         </div>
                         <div style={{ display: 'flex', gap: 6 }}>
-                            <button type="button" className="btn btn-ghost btn-sm" onClick={() => downloadPdf(cert)}>
-                                {t('certificates.pdf', 'PDF')}
+                            <button type="button" className="btn btn-ghost btn-sm" onClick={() => downloadPdf(cert, 'fr')}>
+                                {t('certificates.pdf_fr', 'PDF (FR)')}
+                            </button>
+                            <button type="button" className="btn btn-ghost btn-sm" onClick={() => downloadPdf(cert, 'en')}>
+                                {t('certificates.pdf_en', 'PDF (EN)')}
                             </button>
                             {canWrite && cert.status === 'issued' && (
                                 <button type="button" className="btn btn-ghost btn-sm" onClick={() => { setVoidTargetId(cert.id); setVoidReason(''); }}>

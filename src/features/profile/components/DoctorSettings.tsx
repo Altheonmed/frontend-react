@@ -14,6 +14,7 @@ const ScheduleSection      = lazy(() => import('./sections/ScheduleSection'));
 const AvailabilitySection  = lazy(() => import('./sections/AvailabilitySection'));
 const NotificationsSection = lazy(() => import('./sections/NotificationsSection'));
 const BillingSection       = lazy(() => import('./sections/BillingSection'));
+const LetterheadSection    = lazy(() => import('./sections/LetterheadSection'));
 const SecuritySection      = lazy(() => import('./sections/SecuritySection'));
 const PreferencesSection   = lazy(() => import('./sections/PreferencesSection'));
 
@@ -24,6 +25,7 @@ const SECTIONS = [
     { id: 'availability',  icon: 'clock'    as IconName },
     { id: 'notifications', icon: 'bell'     as IconName },
     { id: 'billing',       icon: 'stats'    as IconName },
+    { id: 'letterhead',    icon: 'notebook' as IconName },
     { id: 'security',      icon: 'shield'   as IconName },
     { id: 'preferences',   icon: 'settings' as IconName },
 ] as const;
@@ -69,6 +71,7 @@ export default function DoctorSettings() {
                         {active === 'availability'  && <AvailabilitySection />}
                         {active === 'notifications' && <NotificationsSection />}
                         {active === 'billing'       && <BillingSection />}
+                        {active === 'letterhead'    && <LetterheadSection />}
                         {active === 'security'      && <SecuritySection />}
                         {active === 'preferences'   && <PreferencesSection />}
                     </Suspense>

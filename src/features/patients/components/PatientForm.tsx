@@ -16,6 +16,7 @@ const makePatientSchema = (t: TFunction) => z.object({
     first_name: z.string().min(1, t('patient_form.validation.first_name_required', 'First name is required')),
     last_name: z.string().min(1, t('patient_form.validation.last_name_required', 'Last name is required')),
     date_of_birth: z.string().optional(),
+    national_id: z.string().optional(),
     email: z.string().email(t('patient_form.validation.invalid_email', 'Invalid email')).optional().or(z.literal('')),
     phone_number: z.string().optional(),
     address: z.string().optional(),
@@ -63,6 +64,7 @@ const PatientForm = ({ onSuccess, patientToEdit, onCancel, onRequestExistingAcce
             first_name: '',
             last_name: '',
             date_of_birth: '',
+            national_id: '',
             email: '',
             phone_number: '',
             address: '',
@@ -80,6 +82,7 @@ const PatientForm = ({ onSuccess, patientToEdit, onCancel, onRequestExistingAcce
                 first_name: patientToEdit.first_name || '',
                 last_name: patientToEdit.last_name || '',
                 date_of_birth: patientToEdit.date_of_birth || '',
+                national_id: (patientToEdit as { national_id?: string }).national_id || '',
                 email: patientToEdit.email || '',
                 phone_number: patientToEdit.phone_number || '',
                 address: patientToEdit.address || '',
@@ -271,6 +274,14 @@ const PatientForm = ({ onSuccess, patientToEdit, onCancel, onRequestExistingAcce
                         <span style={{ fontSize: '0.7rem', fontWeight: 600, background: 'var(--accent-light, #dbeafe)', color: 'var(--accent)', padding: '0.1rem 0.45rem', borderRadius: '999px', letterSpacing: '0.02em' }}>{t('patient_form.badge.portal_verification', 'Portal verification')}</span>
                     </label>
                     <input type="date" id="date_of_birth" className="input" {...register('date_of_birth')} />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="national_id">{t('patient_form.label.national_id', 'ID number')}</label>
+                    <input
+                        type="text" id="national_id" className="input"
+                        placeholder={t('patient_form.hint.national_id', 'Printed on medical certificates')}
+                        {...register('national_id')}
+                    />
                 </div>
                 <div className="form-group">
                     <label htmlFor="age">{t('patient_form.label.age')}</label>
