@@ -1,5 +1,7 @@
 # Altheon Connect — Feature-Based Architecture Restructuring
 
+> ⚠️ **PARTIALLY STALE (flagged 2026-07-14).** Written before: the Supabase Postgres 17 migration (2026-06-24 — DB sections referencing Railway/local Postgres are outdated), the platform-wide hiding of the messaging feature (2026-05-19), and the EN+FR-only i18n decision (AR/UR dropped 2026-05-16). Cross-check against AUDIT/DATABASE_SCHEMA.md and AUDIT/INDEX.md before relying on affected sections.
+
 ## Table of Contents
 1. [Executive Summary](#executive-summary)
 2. [Problems with Previous Structure](#problems-with-previous-structure)
