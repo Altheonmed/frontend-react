@@ -66,8 +66,16 @@ const RX_FREQUENCY_LABEL_KEYS: Record<string, string> = {
     other: 'common.other',
 };
 
-// Helper: convert empty string input to null for optional numeric fields
-const numericValueAs = (v: unknown) => (v === '' || v == null) ? null : Number(v);
+// Helper: convert empty string input to null for optional numeric fields.
+// Accepts the comma decimal separator ("36,9") — French writes vitals that way,
+// and the vitals inputs are type="text" so the raw string reaches us unparsed.
+// Returns NaN for genuinely unparseable input so zod reports it rather than
+// silently dropping the reading.
+export const numericValueAs = (v: unknown) => {
+    if (v == null) return null;
+    const raw = String(v).trim().replace(',', '.');
+    return raw === '' ? null : Number(raw);
+};
 
 interface Consultation {
     id?: number;
@@ -865,8 +873,11 @@ const ConsultationForm = ({ patientId, onSuccess, onCancel, consultationToEdit, 
                     )}
                 </>
             );
+            // noValidate: native HTML5 validation ran before react-hook-form and
+            // blocked submit with an untranslated browser tooltip. Zod owns
+            // validation so errors render in-app, in the app's language.
             const formBody = (
-            <form id="consultation-form" onSubmit={handleSubmit(onSubmit)} className="form">
+            <form id="consultation-form" onSubmit={handleSubmit(onSubmit)} className="form" noValidate>
                 {/* Consultation date */}
                 <div className="form-group">
                     <label htmlFor="consultation_date">{t('consultation.date')} <span className="required">*</span></label>
@@ -888,7 +899,7 @@ const ConsultationForm = ({ patientId, onSuccess, onCancel, consultationToEdit, 
                 <div className="form-row">
                     <div className="form-group">
                         <label htmlFor="weight">{t('consultation.weight')}</label>
-                        <input type="number" step="0.01" id="weight" className="input"
+                        <input type="text" inputMode="decimal" id="weight" className="input"
                             {...register('weight', { setValueAs: numericValueAs })} />
                         {errors.weight && <span className="field-error">{errors.weight.message}</span>}
                     </div>
@@ -900,7 +911,7 @@ const ConsultationForm = ({ patientId, onSuccess, onCancel, consultationToEdit, 
                                 <option value="m">m</option>
                             </select>
                         </label>
-                        <input type="number" step="0.01" id="height" className="input"
+                        <input type="text" inputMode="decimal" id="height" className="input"
                             {...register('height', { setValueAs: numericValueAs })} />
                         {errors.height && <span className="field-error">{errors.height.message}</span>}
                     </div>
@@ -908,13 +919,13 @@ const ConsultationForm = ({ patientId, onSuccess, onCancel, consultationToEdit, 
                 <div className="form-row">
                     <div className="form-group">
                         <label htmlFor="temperature">{t('consultation.temperature')}</label>
-                        <input type="number" step="0.01" id="temperature" className="input"
+                        <input type="text" inputMode="decimal" id="temperature" className="input"
                             {...register('temperature', { setValueAs: numericValueAs })} />
                         {errors.temperature && <span className="field-error">{errors.temperature.message}</span>}
                     </div>
                     <div className="form-group">
                         <label htmlFor="sp2">{t('consultation.sp2')}</label>
-                        <input type="number" step="0.01" id="sp2" className="input"
+                        <input type="text" inputMode="decimal" id="sp2" className="input"
                             {...register('sp2', { setValueAs: numericValueAs })} />
                         {errors.sp2 && <span className="field-error">{errors.sp2.message}</span>}
                     </div>
@@ -922,13 +933,13 @@ const ConsultationForm = ({ patientId, onSuccess, onCancel, consultationToEdit, 
                 <div className="form-row">
                     <div className="form-group">
                         <label htmlFor="bp_systolic">{t('consultation.bp_systolic')}</label>
-                        <input type="number" id="bp_systolic" className="input" min="50" max="300"
+                        <input type="text" inputMode="numeric" id="bp_systolic" className="input"
                             {...register('bp_systolic', { setValueAs: numericValueAs })} />
                         {errors.bp_systolic && <span className="field-error">{errors.bp_systolic.message}</span>}
                     </div>
                     <div className="form-group">
                         <label htmlFor="bp_diastolic">{t('consultation.bp_diastolic')}</label>
-                        <input type="number" id="bp_diastolic" className="input" min="30" max="200"
+                        <input type="text" inputMode="numeric" id="bp_diastolic" className="input"
                             {...register('bp_diastolic', { setValueAs: numericValueAs })} />
                         {errors.bp_diastolic && <span className="field-error">{errors.bp_diastolic.message}</span>}
                     </div>
