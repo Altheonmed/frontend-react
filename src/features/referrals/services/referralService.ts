@@ -18,16 +18,31 @@ export const deleteReferral = (id: number) =>
 export const submitDraft = (id: number) =>
     api.post(`/referrals/${id}/submit/`);
 
+// Build multipart form data when the doctor attached response files; the
+// backend reads them under the repeated `response_documents` key.
+const withResponseFiles = (
+    fields: Record<string, string | undefined>,
+    files?: File[],
+): FormData => {
+    const fd = new FormData();
+    Object.entries(fields).forEach(([k, v]) => {
+        if (v != null && v !== '') fd.append(k, v);
+    });
+    (files ?? []).forEach(f => fd.append('response_documents', f));
+    return fd;
+};
+
 export const respondToReferral = (id: number, data: {
     status: 'accepted' | 'in_progress' | 'rejected' | 'returned';
     response_notes?: string;
     return_requested_info?: string;
     appointment_date?: string;
     appointment_type?: 'in_person' | 'telemedicine';
-}) => api.post(`/referrals/${id}/respond/`, data);
+}, files?: File[]) =>
+    api.post(`/referrals/${id}/respond/`, withResponseFiles(data, files));
 
-export const submitResult = (id: number, result: string) =>
-    api.post(`/referrals/${id}/result/`, { result });
+export const submitResult = (id: number, result: string, files?: File[]) =>
+    api.post(`/referrals/${id}/result/`, withResponseFiles({ result }, files));
 
 export const cancelReferral = (id: number, reason?: string) =>
     api.post(`/referrals/${id}/cancel/`, { reason: reason ?? '' });

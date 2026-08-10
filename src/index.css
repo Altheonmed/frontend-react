@@ -3291,6 +3291,12 @@ button[type="submit"]:not(.btn):not(.symptom-chip):not(.notif-bell-btn):not(.lan
   white-space: nowrap;
   flex-shrink: 0;
 }
+.attachment-uploader {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
 
 /* Files staged in a form but not yet uploaded */
 .attachment-pending-list {

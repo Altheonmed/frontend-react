@@ -482,6 +482,24 @@
     margin-bottom: 0.5rem;
 }
 
+/* ── Referral quick clinical actions (received, active) ── */
+.referral-quick-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+    padding: 0.4rem 0.6rem;
+    background: var(--bg-subtle);
+    border-radius: var(--radius-sm);
+}
+.referral-quick-actions__label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-right: 0.15rem;
+}
+
 /* ── Mobile modal bottom-sheet ── */
 @media (max-width: 768px) {
     .modal-overlay { padding: 0; align-items: flex-end; }

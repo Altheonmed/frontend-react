@@ -47,6 +47,49 @@ const URGENCY_DEADLINE_HOURS: Record<string, number> = {
     routine:   720, // 30 days in hours
 };
 
+// ── Response file picker ────────────────────────────────────────────────────────
+// Multi-file input shared by the respond and result modals. Picks append across
+// selections and are removable before submit; mirrors ReferralForm's picker.
+const ResponseFilePicker = ({
+    files, setFiles,
+}: { files: File[]; setFiles: React.Dispatch<React.SetStateAction<File[]>>; }) => {
+    const { t } = useTranslation();
+    return (
+        <div className="form-group">
+            <label htmlFor="response-documents">
+                {t('referrals.respond.attachments_label')}{' '}
+                <span className="form-hint" style={{ display: 'inline' }}>{t('common.optional_parenthetical')}</span>
+            </label>
+            <input
+                type="file" id="response-documents" className="input"
+                accept=".pdf,.jpg,.jpeg,.png,.gif,.webp"
+                multiple
+                onChange={e => {
+                    const picked = Array.from(e.target.files ?? []);
+                    if (picked.length) setFiles(prev => [...prev, ...picked]);
+                    e.target.value = '';
+                }}
+            />
+            {files.length > 0 && (
+                <ul className="attachment-pending-list">
+                    {files.map((file, index) => (
+                        <li key={`${file.name}-${index}`}>
+                            <span className="attachment-pending-name">{file.name}</span>
+                            <button
+                                type="button" className="btn btn-ghost btn-sm"
+                                onClick={() => setFiles(prev => prev.filter((_, i) => i !== index))}
+                                aria-label={t('referrals.form.attachment_remove', { name: file.name })}
+                            >
+                                &times;
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </div>
+    );
+};
+
 // ── Slot Picker ────────────────────────────────────────────────────────────────
 interface SlotInfo { time: string; datetime: string; status: 'free' | 'booked' | 'past'; }
 
@@ -269,6 +312,7 @@ const RespondModal = ({
     const [respondStatus, setRespondStatus] = useState(options[0]?.value ?? 'accepted');
     const [notes, setNotes] = useState('');
     const [returnInfo, setReturnInfo] = useState('');
+    const [files, setFiles] = useState<File[]>([]);
     const [error, setError] = useState('');
     // Appointment scheduling fields (only shown when accepting a mandatory-appointment type)
     const [apptDate, setApptDate] = useState('');
@@ -284,7 +328,7 @@ const RespondModal = ({
             response_notes: notes,
             return_requested_info: returnInfo,
             ...(needsAppointment && apptSlot ? { appointment_date: apptSlot, appointment_type: apptType } : {}),
-        }),
+        }, files),
         onSuccess: (res) => { toast.success(t('referrals.respond.success')); onDone(res.data); },
         onError: (err: unknown) => {
             const e = err as { response?: { data?: { error?: string; detail?: string } } };
@@ -361,6 +405,8 @@ const RespondModal = ({
                     </div>
                 )}
 
+                <ResponseFilePicker files={files} setFiles={setFiles} />
+
                 {needsAppointment && (() => {
                     const urgency = referral.urgency ?? 'routine';
                     const deadlineHours = URGENCY_DEADLINE_HOURS[urgency] ?? 720;
@@ -435,10 +481,11 @@ const SubmitResultModal = ({
 }: { referral: Referral; onClose: () => void; onDone: (updated: Referral) => void; }) => {
     const { t } = useTranslation();
     const [result, setResult] = useState('');
+    const [files, setFiles] = useState<File[]>([]);
     const [error, setError] = useState('');
 
     const { mutate: submit, isPending } = useMutation({
-        mutationFn: () => submitResult(referral.id, result),
+        mutationFn: () => submitResult(referral.id, result, files),
         onSuccess: (res) => { toast.success(t('referrals.result.success')); onDone(res.data); },
         onError: (err: unknown) => {
             const e = err as { response?: { data?: { error?: string; detail?: string } } };
@@ -478,6 +525,7 @@ const SubmitResultModal = ({
                         required
                     />
                 </div>
+                <ResponseFilePicker files={files} setFiles={setFiles} />
             </form>
         </Modal>
     );
@@ -637,6 +685,15 @@ const ReferralsList = () => {
                         const canEdit    = isSent && ['draft', 'pending', 'returned'].includes(referral.status);
                         const isReturnedToMe = isSent && referral.status === 'returned';
                         const urgency    = referral.urgency ?? 'routine';
+                        // While a received referral is active, the specialist has
+                        // patient access and can record clinical records via the
+                        // chart's existing (safety-checked) forms. Access is
+                        // revoked once the referral completes, so only offer this
+                        // while accepted/in_progress.
+                        const canAddClinical = isReceived
+                            && ['accepted', 'in_progress'].includes(referral.status)
+                            && !!referral.patient_details?.unique_id;
+                        const chartBase = `/patients/${referral.patient_details?.unique_id}`;
 
                         return (
                             <div key={referral.id} className={urgencyClass(urgency)}>
@@ -700,7 +757,7 @@ const ReferralsList = () => {
                                         <div className="card-meta" style={{ marginBottom: '0.25rem' }}>
                                             {t('referrals.list.card.attachments')}
                                         </div>
-                                        <AttachmentList attachments={referral.file_attachments} />
+                                        <AttachmentList attachments={referral.file_attachments} showUploader />
                                     </div>
                                 )}
 
@@ -742,6 +799,16 @@ const ReferralsList = () => {
                                     <div className="card-meta" style={{ marginTop: '0.25rem', color: 'var(--text-muted)' }}>
                                         {t('referrals.list.card.cancelled_by', { name: referral.cancelled_by_details.full_name })}
                                         {referral.cancellation_reason && ` — ${referral.cancellation_reason}`}
+                                    </div>
+                                )}
+
+                                {canAddClinical && (
+                                    <div className="referral-quick-actions">
+                                        <span className="referral-quick-actions__label">{t('referrals.list.card.add_records_label')}</span>
+                                        <Link to={`${chartBase}?add=lab`} className="btn btn-ghost btn-sm">{t('referrals.list.card.add_lab')}</Link>
+                                        <Link to={`${chartBase}?add=procedure`} className="btn btn-ghost btn-sm">{t('referrals.list.card.add_procedure')}</Link>
+                                        <Link to={`${chartBase}?add=consultation`} className="btn btn-ghost btn-sm">{t('referrals.list.card.add_medication')}</Link>
+                                        <Link to={chartBase} className="btn btn-ghost btn-sm">{t('referrals.list.card.open_chart')}</Link>
                                     </div>
                                 )}
 

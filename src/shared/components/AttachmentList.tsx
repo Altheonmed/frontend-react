@@ -9,6 +9,7 @@ export interface Attachment {
     mime_type: string;
     download_url: string | null;
     created_at?: string;
+    uploaded_by_name?: string;
 }
 
 function fileIcon(mimeType: string): string {
@@ -29,9 +30,12 @@ function formatBytes(bytes: number | null): string {
 interface Props {
     attachments: Attachment[];
     style?: React.CSSProperties;
+    // When true, show who uploaded each file (e.g. to tell the referring
+    // doctor's documents from the specialist's response documents).
+    showUploader?: boolean;
 }
 
-export function AttachmentList({ attachments, style }: Props) {
+export function AttachmentList({ attachments, style, showUploader }: Props) {
     const { t } = useTranslation();
     if (!attachments.length) return null;
 
@@ -49,6 +53,9 @@ export function AttachmentList({ attachments, style }: Props) {
                     >
                         <span className="attachment-icon">{fileIcon(att.mime_type)}</span>
                         <span className="attachment-name">{att.original_filename}</span>
+                        {showUploader && att.uploaded_by_name && (
+                            <span className="attachment-uploader">· {att.uploaded_by_name}</span>
+                        )}
                         {att.file_size && (
                             <span className="attachment-size">{formatBytes(att.file_size)}</span>
                         )}

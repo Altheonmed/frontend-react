@@ -80,6 +80,7 @@ const PatientDetails = () => {
     const [showDropdown, setShowDropdown] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const openConsultHandledRef = useRef<string | null>(null);
+    const addFormHandledRef = useRef<string | null>(null);
 
     const [confirmDeleteConsultationId, setConfirmDeleteConsultationId] = useState<number | null>(null);
     const [confirmDeleteProcedureId, setConfirmDeleteProcedureId] = useState<number | null>(null);
@@ -602,6 +603,31 @@ const PatientDetails = () => {
             }).catch(() => {
                 // Tab already switched — consultation may no longer be accessible
             });
+        }
+
+        // Deep-link add-forms, used by the referral response quick actions so a
+        // referred doctor lands straight in the existing (validated, safety-
+        // checked) form. Consulted once per distinct value via addFormHandledRef.
+        const addParam = searchParams.get('add');
+        if (addParam && addFormHandledRef.current !== addParam) {
+            addFormHandledRef.current = addParam;
+            if (addParam === 'procedure') {
+                setProcedureToEdit(null);
+                setShowProcedureForm(true);
+                handleTabChange('history');
+            } else if (addParam === 'lab') {
+                setEditingLabId(null);
+                setShowLabForm(true);
+                handleTabChange('labs');
+            } else if (addParam === 'consultation') {
+                // Medications are prescribed inside a consultation — there is no
+                // standalone medication form (the consultation flow runs the
+                // RxNorm interaction checks).
+                setConsultationToEdit(null);
+                setConsultationFormIsDraft(false);
+                setShowConsultationForm(true);
+                handleTabChange('consultations');
+            }
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchParams]);

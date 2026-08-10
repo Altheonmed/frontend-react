@@ -358,6 +358,7 @@ export interface Referral {
         mime_type: string;
         download_url: string | null;
         created_at: string;
+        uploaded_by_name?: string;
     }>;
     date_of_referral: string;
     comments: string | null;

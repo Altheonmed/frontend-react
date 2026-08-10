@@ -229,7 +229,7 @@ const MedicalActTab = ({
                                         {r.file_attachments && r.file_attachments.length > 0 && (
                                             <div className="info-item">
                                                 <strong>{t('referrals.list.card.attachments')}:</strong>
-                                                <AttachmentList attachments={r.file_attachments} style={{ marginTop: '0.25rem' }} />
+                                                <AttachmentList attachments={r.file_attachments} style={{ marginTop: '0.25rem' }} showUploader />
                                             </div>
                                         )}
 
