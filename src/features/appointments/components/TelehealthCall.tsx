@@ -33,6 +33,14 @@ const ConsultationForm = lazy(() => import('../../consultations/components/Consu
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type StreamSdk = any;
 
+// Screen capture is a desktop-only browser API: Chrome/Firefox on Android and
+// every iOS browser ship `mediaDevices` without `getDisplayMedia`. Calling
+// `screenShare.toggle()` there rejects with a TypeError, so the control has to
+// be hidden rather than rendered as a button that silently does nothing.
+const screenShareSupported = (): boolean =>
+    typeof navigator !== 'undefined'
+    && typeof navigator.mediaDevices?.getDisplayMedia === 'function';
+
 interface TelehealthCredentials {
     api_key: string;
     user_id: string;
@@ -306,6 +314,21 @@ function CallStageInner({ sdk, join, role, minimized, onToggleMinimize, onEnd, j
     const remoteName = role === 'doctor' ? join.patient_name : `Dr. ${join.doctor_name}`;
     const subtitle = role === 'doctor' ? join.reason : t('telehealth.with_doctor', 'Telehealth visit');
 
+    // Evaluated once — the capability can't change for the life of the tab.
+    const [canShareScreen] = useState(screenShareSupported);
+
+    // `toggle()` rejects on permission denial and on browsers without screen
+    // capture. Unhandled, it left the button looking inert; surface it instead.
+    const handleToggleScreenShare = async () => {
+        try {
+            await screen.screenShare.toggle();
+        } catch (e: unknown) {
+            const name = (e as { name?: string })?.name;
+            if (name === 'NotAllowedError' || name === 'AbortError') return; // user cancelled the picker
+            toast.error(t('telehealth.share_failed', 'Screen sharing could not be started on this device.'));
+        }
+    };
+
     const stageClass = [
         'th-stage',
         minimized ? 'th-stage--mini' : 'th-stage--full',
@@ -405,10 +428,10 @@ function CallStageInner({ sdk, join, role, minimized, onToggleMinimize, onEnd, j
                         {cam.isMute ? <CamOffIcon /> : <CamIcon />}
                     </ControlButton>
 
-                    {role === 'doctor' && (
+                    {role === 'doctor' && canShareScreen && (
                         <ControlButton
                             active={!screen.isMute}
-                            onClick={() => screen.screenShare.toggle()}
+                            onClick={handleToggleScreenShare}
                             label={screen.isMute ? t('telehealth.share', 'Share screen') : t('telehealth.stop_share', 'Stop sharing')}
                         >
                             <ScreenIcon />

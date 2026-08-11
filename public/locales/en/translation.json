@@ -2656,6 +2656,7 @@
   "telehealth.open_notes": "Open notes",
   "telehealth.sdk.missing": "Stream Video SDK is not installed.",
   "telehealth.share": "Share screen",
+  "telehealth.share_failed": "Screen sharing could not be started on this device.",
   "telehealth.stop_share": "Stop sharing",
   "telehealth.toast.ended": "Visit ended.",
   "telehealth.unmute": "Unmute",

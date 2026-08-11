@@ -676,8 +676,13 @@ body:has(.th-stage--full) .page-content {
 @media (max-width: 720px) {
     .th-stage--with-panel .th-main {
         /* When the form is open on a phone, hide the video tiles entirely
-           and let the form take the full available space — easier to type. */
-        grid-template-rows: 0 1fr;
+           and let the form take the full available space — easier to type.
+
+           `.th-video` below is `display: none`, which stops it being a grid
+           item, so `.th-panel` auto-places into the FIRST track. The grid must
+           therefore declare exactly one track: a two-track `0 1fr` put the
+           panel in the 0px row and the consultation form rendered invisible. */
+        grid-template-rows: minmax(0, 1fr);
     }
     .th-stage--with-panel .th-video {
         display: none;
