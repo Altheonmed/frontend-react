@@ -148,11 +148,15 @@ export default function PatientLoginPage() {
                         <span>{t('patient_portal.auth.login.new_to_portal')}</span>
                     </div>
 
-                    <div style={{ display: 'flex', gap: '0.75rem' }}>
-                        <Link to="/patient/register" className="btn btn-primary" style={{ flex: 1, justifyContent: 'center' }}>
+                    {/* Buttons never shrink below their label (.btn is nowrap), so a
+                        two-up row pushed the second CTA off-screen once translated —
+                        "Reclamer le dossier" overflowed a 390px phone by 28px. Wrap to
+                        one-per-line rather than clip. */}
+                    <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                        <Link to="/patient/register" className="btn btn-primary" style={{ flex: '1 1 9rem', justifyContent: 'center' }}>
                             {t('patient_portal.auth.create_account_short')}
                         </Link>
-                        <Link to="/patient/claim" className="btn btn-secondary" style={{ flex: 1, justifyContent: 'center' }}>
+                        <Link to="/patient/claim" className="btn btn-secondary" style={{ flex: '1 1 9rem', justifyContent: 'center' }}>
                             {t('patient_portal.auth.claim_record')}
                         </Link>
                     </div>

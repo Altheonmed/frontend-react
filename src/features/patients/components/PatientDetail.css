@@ -823,6 +823,52 @@
     .patient-header-info { min-width: 0; max-width: calc(100% - 68px); overflow: hidden; }
 }
 
+/* ══ MOBILE: NOTHING MAY HIDE OFF-SCREEN ═════════════════════════
+   The action strip and the tab bar were horizontal scroll containers
+   with their scrollbars suppressed. On a phone that put 5 of 8 chart
+   tabs and the PDF / More buttons past the right edge with no visual
+   cue that they existed. Both wrap instead — every control is on
+   screen, which is what a clinician needs on a phone.
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+    .patient-action-strip {
+        flex-wrap: wrap;
+        overflow-x: visible;
+        gap: 6px;
+    }
+
+    .patient-tabs {
+        flex-wrap: wrap;
+        overflow-x: visible;
+        gap: 2px 0;
+        border-bottom: none;
+    }
+
+    .patient-tab {
+        flex: 1 1 auto;
+        justify-content: center;
+        border-bottom: 2px solid transparent;
+        margin-bottom: 0;
+    }
+
+    /* Tab toolbars nest inline-styled flex rows (Labs "+ Add result",
+       Medical act, Certificates…). The outer .tab-panel-header wraps but
+       those inner rows did not, so a filter-toggle + Add-button cluster
+       stayed one unbreakable line and the Add button was pushed off the
+       screen. flex-wrap is never set inline, so this reaches all of them
+       without touching each component. .view-toggle is excluded — it is a
+       segmented control that must stay on one line. */
+    .tab-panel-header > div,
+    .tab-panel-header > div div:not(.view-toggle) {
+        flex-wrap: wrap;
+    }
+
+    .tab-panel-header > div {
+        width: 100%;
+        justify-content: flex-start;
+    }
+}
+
 @media (max-width: 480px) {
     .patient-tab { padding: 7px 9px; font-size: 12px; }
     .tab-count { display: none; }
