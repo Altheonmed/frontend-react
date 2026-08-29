@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 
 import LeafletMap, { type MapBounds, type MapMarker } from '../../../shared/components/map/LeafletMap';
+import { resolveMediaUrl } from '../../../shared/utils/mediaUrl';
 import { usePageTitle } from '../../../shared/hooks/usePageTitle';
 import { queryKeys } from '../../../shared/queryKeys';
 import { toast } from '../../../shared/components/ui/toast';
@@ -347,7 +348,7 @@ export default function FindDoctors() {
                             >
                                 <div className="doc-card__avatar" aria-hidden="true">
                                     {d.avatar_url
-                                        ? <img src={d.avatar_url} alt="" className="doc-card__avatar-img" />
+                                        ? <img src={resolveMediaUrl(d.avatar_url)} alt="" className="doc-card__avatar-img" />
                                         : initials(d.full_name)}
                                 </div>
                                 <div className="doc-card__body">

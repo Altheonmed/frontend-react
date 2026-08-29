@@ -13,6 +13,8 @@
 
 import { useState, useEffect } from 'react';
 
+import { resolveMediaUrl } from '../utils/mediaUrl';
+
 interface AvatarProps {
     name: string;
     src?: string | null;            // optional photo URL (signed)
@@ -33,13 +35,15 @@ export function Avatar({ name, src, size = 'md', className = '', ring = false }:
     const wrapperClass =
         `avatar ${sizeClass}${ring ? ' avatar-ring' : ''}${className ? ' ' + className : ''}`;
 
-    // Treat falsy / empty / whitespace-only as no-photo.
-    const hasSrc = typeof src === 'string' && src.trim().length > 0;
+    // Treat falsy / empty / whitespace-only as no-photo. A relative /media/
+    // path must be resolved against the API origin, not the frontend's.
+    const resolvedSrc = resolveMediaUrl(src);
+    const hasSrc = Boolean(resolvedSrc);
     const [errored, setErrored] = useState(false);
 
     // If the URL changes (e.g. after a fresh upload), give the new image
     // another chance to load — clear the error state.
-    useEffect(() => { setErrored(false); }, [src]);
+    useEffect(() => { setErrored(false); }, [resolvedSrc]);
 
     const showPhoto = hasSrc && !errored;
 
@@ -47,7 +51,7 @@ export function Avatar({ name, src, size = 'md', className = '', ring = false }:
         <div className={wrapperClass} aria-label={name} title={name}>
             {showPhoto ? (
                 <img
-                    src={src as string}
+                    src={resolvedSrc as string}
                     alt=""
                     className="avatar-photo"
                     onError={() => setErrored(true)}
