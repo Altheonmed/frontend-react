@@ -84,24 +84,29 @@ export default function ProfessionalSection() {
 
     return (
         <div className="settings-card profedit">
-            <div className="settings-card-head">
-                <h2 className="settings-card-title">{t('doctorProfile.settings.title')}</h2>
-                <p className="settings-card-subtitle">{t('doctorProfile.settings.subtitle')}</p>
+            <div className="settings-card-head profedit__head">
+                <div>
+                    <h2 className="settings-card-title">{t('doctorProfile.settings.title')}</h2>
+                    <p className="settings-card-subtitle">{t('doctorProfile.settings.subtitle')}</p>
+                </div>
+                {profile?.id && (
+                    <Link
+                        to={`/find-doctors/${profile.id}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="btn btn-secondary btn-sm profedit__preview-btn"
+                    >
+                        {t('doctorProfile.settings.previewCta')} ↗
+                    </Link>
+                )}
             </div>
 
             <ProfileCompletenessMeter />
 
-            {profile?.id && (
-                <p className="profedit__preview">
-                    <Link to={`/find-doctors/${profile.id}`} target="_blank" rel="noreferrer">
-                        {t('doctorProfile.settings.previewPublic')} →
-                    </Link>
-                </p>
-            )}
-
             {/* ── About ── */}
             <div className="profedit__block">
                 <h3 className="proflist__title">{t('doctorProfile.about')}</h3>
+                <p className="profedit__block-hint">{t('doctorProfile.settings.aboutHint')}</p>
                 <div className="proflist__grid">
                     <div className="form-group proflist__half">
                         <label htmlFor="professional_title">{t('doctorProfile.settings.professionalTitle')}</label>

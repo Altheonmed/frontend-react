@@ -38,12 +38,42 @@
 .completeness--warn .completeness__fill { background: var(--color-warning); }
 .completeness--ok   .completeness__fill { background: var(--color-success); }
 
-.completeness__missing,
 .completeness__gate {
     margin: 0.5rem 0 0;
     font-size: 0.8125rem;
     color: var(--text-muted);
     line-height: 1.45;
+}
+
+/* A comma-separated sentence of ten gaps was unreadable; chips let the
+   doctor see at a glance what is left. */
+.completeness__missing {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 0.625rem;
+}
+
+.completeness__missing-label {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    margin-right: 0.15rem;
+}
+
+.completeness__missing-list { display: contents; }
+
+.completeness__gap {
+    padding: 0.15rem 0.5rem;
+    border-radius: var(--radius-pill);
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
 }
 
 .completeness__publish { margin-top: 0.75rem; }
@@ -179,4 +209,30 @@
     .proflist__item-actions { width: 100%; }
     .proflist__item-actions .btn { flex: 1; min-height: 44px; }
     .proflist__form-actions .btn { flex: 1; min-height: 44px; }
+}
+
+
+/* ── Settings section header ── */
+.profedit__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.profedit__preview-btn { flex-shrink: 0; white-space: nowrap; }
+
+.profedit__block-hint {
+    margin: -0.35rem 0 0.75rem;
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+}
+
+/* Give each block a clear start; the form previously ran together. */
+.profedit__block > .proflist__title,
+.proflist__title { letter-spacing: -0.01em; }
+
+@media (max-width: 768px) {
+    .profedit__head { flex-direction: column; align-items: stretch; }
+    .profedit__preview-btn { width: 100%; min-height: 44px; justify-content: center; }
 }

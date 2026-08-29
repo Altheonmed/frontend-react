@@ -55,10 +55,18 @@ export default function ProfileCompletenessMeter({ compact = false }: { compact?
             </div>
 
             {data.missing.length > 0 && (
-                <p className="completeness__missing">
-                    {t('doctorProfile.completeness.missing')}{' '}
-                    {data.missing.map(m => t(`doctorProfile.parts.${m}`, m)).join(', ')}
-                </p>
+                <div className="completeness__missing">
+                    <span className="completeness__missing-label">
+                        {t('doctorProfile.completeness.stillMissing')}
+                    </span>
+                    <span className="completeness__missing-list">
+                        {data.missing.map(m => (
+                            <span key={m} className="completeness__gap">
+                                {t(`doctorProfile.parts.${m}`, m)}
+                            </span>
+                        ))}
+                    </span>
+                </div>
             )}
 
             {!compact && (
