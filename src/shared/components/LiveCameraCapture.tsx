@@ -21,6 +21,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 interface Props {
     onCapture: (blob: Blob) => void;
     onCancel?: () => void;
+    /** Fired when the camera cannot be used at all (no device, or permission
+     *  denied), so callers that require a photo can offer a way forward. */
+    onUnavailable?: () => void;
     /** Output JPEG quality 0..1 (default 0.9 — server re-encodes regardless). */
     quality?: number;
     /** Max output dimension in pixels (default 1024 — matches server target). */
@@ -32,6 +35,7 @@ type Phase = 'requesting' | 'streaming' | 'previewing' | 'denied' | 'error';
 export function LiveCameraCapture({
     onCapture,
     onCancel,
+    onUnavailable,
     quality = 0.9,
     maxDimension = 1024,
 }: Props) {
@@ -66,15 +70,18 @@ export function LiveCameraCapture({
             const e = err as DOMException;
             if (e?.name === 'NotAllowedError' || e?.name === 'SecurityError') {
                 setPhase('denied');
+                onUnavailable?.();
             } else if (e?.name === 'NotFoundError' || e?.name === 'OverconstrainedError') {
                 setPhase('error');
+                onUnavailable?.();
                 setErrMsg('No camera detected on this device.');
             } else {
                 setPhase('error');
+                onUnavailable?.();
                 setErrMsg(e?.message || 'Could not start the camera.');
             }
         }
-    }, []);
+    }, [onUnavailable]);
 
     // Attach the live stream once the <video> element is actually in the DOM.
     // This fixes the "black video" bug: setting srcObject during the 'requesting'

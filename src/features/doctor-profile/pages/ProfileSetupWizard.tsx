@@ -9,6 +9,8 @@ import { toast, parseApiError } from '../../../shared/components/ui';
 import { usePageTitle } from '../../../shared/hooks/usePageTitle';
 import { queryKeys } from '../../../shared/queryKeys';
 import { useDoctorProfile } from '../../profile/hooks/useDoctorProfile';
+import AvatarManager from '../../../shared/components/AvatarManager';
+import api from '../../../shared/services/api';
 import TagInput from '../components/TagInput';
 import ProfileListEditor from '../components/ProfileListEditor';
 import ProfileCompletenessMeter from '../components/ProfileCompletenessMeter';
@@ -37,8 +39,24 @@ export default function ProfileSetupWizard() {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const qc = useQueryClient();
-    const { profile, saveProfile } = useDoctorProfile();
+    const { profile, saveProfile, refreshProfile } = useDoctorProfile();
     usePageTitle(t('doctorProfile.wizard.title'));
+
+    // A photo is the first thing a patient registers about a doctor, so the
+    // wizard asks for it up front rather than leaving it to Settings.
+    const uploadAvatar = async (blob: Blob) => {
+        const fd = new FormData();
+        fd.append('avatar', blob, 'avatar.jpg');
+        await api.post('/profile/avatar/', fd);
+        await refreshProfile();
+        qc.invalidateQueries({ queryKey: queryKeys.doctorProfile.completeness() });
+        toast.success(t('settings.avatar.updated'));
+    };
+    const removeAvatar = async () => {
+        await api.delete('/profile/avatar/');
+        await refreshProfile();
+        qc.invalidateQueries({ queryKey: queryKeys.doctorProfile.completeness() });
+    };
 
     const [step, setStep] = useState(0);
     const [saving, setSaving] = useState(false);
@@ -144,6 +162,17 @@ export default function ProfileSetupWizard() {
                 <div className="wizard__body">
                     {step === 0 && (
                         <div className="proflist__grid">
+                            <div className="form-group">
+                                <label>{t('doctorProfile.wizard.photoLabel')}</label>
+                                <p className="profedit__block-hint">{t('doctorProfile.wizard.photoHint')}</p>
+                                <AvatarManager
+                                    name={profile?.full_name ?? ''}
+                                    currentUrl={(profile as unknown as { avatar_url?: string | null })?.avatar_url ?? null}
+                                    mode="camera"
+                                    onUpload={uploadAvatar}
+                                    onRemove={removeAvatar}
+                                />
+                            </div>
                             <div className="form-group proflist__half">
                                 <label htmlFor="w_title">{t('doctorProfile.settings.professionalTitle')}</label>
                                 <input id="w_title" className="input" value={about.professional_title}

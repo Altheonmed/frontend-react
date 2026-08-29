@@ -147,6 +147,9 @@ export default function Register() {
     const [geocoding, setGeocoding] = useState(false);
     // Optional profile photo (live camera only for doctors) captured in the final step.
     const [avatarBlob, setAvatarBlob] = useState<Blob | null>(null);
+    // Set when getUserMedia fails (no camera / permission denied). A photo is
+    // required, but it must not become an impassable wall on such a device.
+    const [cameraUnavailable, setCameraUnavailable] = useState(false);
     const [avatarPreviewUrl, setAvatarPreviewUrl] = useState<string | null>(null);
     const [cameraOpen, setCameraOpen] = useState(false);
 
@@ -198,6 +201,12 @@ export default function Register() {
     const handleNext4 = s4.handleSubmit(data => { setFormData(prev => ({ ...prev, ...data })); setStep(4); });
 
     const handleSubmit5 = s5.handleSubmit(async data => {
+        // A profile photo is required: it is what patients and referring
+        // doctors see first. Only waived when the device has no usable camera.
+        if (!avatarBlob && !cameraUnavailable) {
+            setError(t('register.profile_photo_required'));
+            return;
+        }
         setError(null);
         setSubmitting(true);
         const d = { ...formData, ...data };
@@ -535,11 +544,14 @@ export default function Register() {
 
                                 {/* Optional profile photo — live camera only (no device upload) */}
                                 <div className="form-field">
-                                    <label>{t('register.profile_photo_label')}</label>
+                                    <label>
+                                        {t('register.profile_photo_label')} <span className="required">*</span>
+                                    </label>
                                     {cameraOpen ? (
                                         <LiveCameraCapture
                                             onCapture={handleAvatarCapture}
                                             onCancel={() => setCameraOpen(false)}
+                                            onUnavailable={() => setCameraUnavailable(true)}
                                         />
                                     ) : avatarPreviewUrl ? (
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
@@ -556,7 +568,11 @@ export default function Register() {
                                     ) : (
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
                                             <button type="button" className="btn btn-secondary" onClick={() => setCameraOpen(true)}>{t('register.profile_photo_take')}</button>
-                                            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{t('register.profile_photo_optional')}</span>
+                                            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                                                {cameraUnavailable
+                                                    ? t('register.profile_photo_no_camera')
+                                                    : t('register.profile_photo_why')}
+                                            </span>
                                         </div>
                                     )}
                                 </div>
