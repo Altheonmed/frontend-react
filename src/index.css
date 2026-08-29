@@ -332,6 +332,10 @@ input, textarea, select {
   box-shadow: none !important;
 }
 
+/* Link-styled buttons: the global `a:hover` recolour must not override a
+   button variant's text colour, or a filled button goes invisible on hover. */
+a.btn:hover { color: inherit; }
+
 /* Primary — violet fill */
 .btn-primary {
   background: var(--accent);
@@ -339,6 +343,7 @@ input, textarea, select {
   color: var(--text-inverse);
 }
 .btn-primary:hover:not(:disabled) {
+  color: var(--text-inverse);
   background: var(--accent-hover);
   border-color: var(--accent-hover);
   box-shadow: var(--shadow-sm);
@@ -351,6 +356,7 @@ input, textarea, select {
   color: var(--accent);
 }
 .btn-secondary:hover:not(:disabled) {
+  color: var(--accent);
   background: var(--accent-light);
 }
 
@@ -372,6 +378,7 @@ input, textarea, select {
   color: var(--color-danger);
 }
 .btn-danger:hover:not(:disabled) {
+  color: var(--color-danger);
   background: var(--color-danger-light);
 }
 
@@ -382,6 +389,7 @@ input, textarea, select {
   color: var(--text-inverse);
 }
 .btn-danger-fill:hover:not(:disabled) {
+  color: var(--text-inverse);
   background: var(--color-danger-hover);
   border-color: var(--color-danger-hover);
 }

@@ -101,6 +101,7 @@ export default function ProfessionalSection() {
                 )}
             </div>
 
+            <div className="settings-card-body">
             <ProfileCompletenessMeter />
 
             {/* ── About ── */}
@@ -309,6 +310,7 @@ export default function ProfessionalSection() {
                 onUpdate={doctorProfileService.updateInsurance}
                 onDelete={doctorProfileService.deleteInsurance}
             />
+            </div>
         </div>
     );
 }

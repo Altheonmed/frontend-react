@@ -4,7 +4,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 
 import { PageHeader } from '../../../shared/components/PageHeader';
-import { SectionCard } from '../../../shared/components/SectionCard';
+import '../../../shared/styles/settings-ui.css';
 import { toast, parseApiError } from '../../../shared/components/ui';
 import { usePageTitle } from '../../../shared/hooks/usePageTitle';
 import { queryKeys } from '../../../shared/queryKeys';
@@ -124,7 +124,8 @@ export default function ProfileSetupWizard() {
                 }
             />
 
-            <SectionCard>
+            <div className="settings-card">
+                <div className="settings-card-body">
                 <ol className="wizard__steps" aria-label={t('doctorProfile.wizard.title')}>
                     {STEPS.map((s, i) => (
                         <li
@@ -295,7 +296,8 @@ export default function ProfileSetupWizard() {
                         )}
                     </div>
                 </div>
-            </SectionCard>
+                </div>
+            </div>
         </>
     );
 }
