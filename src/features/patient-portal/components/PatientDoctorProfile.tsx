@@ -62,6 +62,7 @@ export default function PatientDoctorProfile() {
                             {t('patient_portal.doctor_profile.book_appointment')}
                         </button>
                     }
+                    actionsNote={t('patient_portal.doctor_profile.book_intro', { name: doctor.full_name })}
                 />
             )}
         </>

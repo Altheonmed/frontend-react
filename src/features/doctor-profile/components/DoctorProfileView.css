@@ -5,6 +5,11 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    /* Contain the reading width: on a wide monitor a full-bleed profile
+       stretches a short bio into an unreadable line and leaves a large void. */
+    max-width: 1180px;
+    margin-inline: auto;
+    width: 100%;
 }
 
 /* ── Hero ── */
@@ -21,12 +26,6 @@
 
 .docprof__hero-body { flex: 1; min-width: 0; }
 
-.docprof__hero-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    flex-shrink: 0;
-}
 
 .docprof__name {
     margin: 0;
@@ -294,6 +293,7 @@
 }
 
 /* ── Compact (referral picker drawer) ── */
+.docprof--compact { max-width: none; }
 .docprof--compact .docprof__grid { grid-template-columns: minmax(0, 1fr); }
 .docprof--compact .docprof__hero { padding: 1rem; }
 .docprof--compact .docprof__card { padding: 1rem; }
@@ -310,9 +310,7 @@
         text-align: center;
         padding: 1.25rem 1rem;
     }
-    .docprof__hero-actions { width: 100%; }
     /* Touch targets must clear 44px on mobile — btn-sm/btn-xs do not by default. */
-    .docprof__hero-actions .btn { width: 100%; min-height: 44px; }
     .docprof__loc .btn { min-height: 44px; padding-inline: 0.9rem; }
     .docprof__badges, .docprof__tags { justify-content: center; }
 
@@ -321,4 +319,118 @@
 
     .docprof__service { flex-direction: column; gap: 0.35rem; }
     .docprof__service-side { align-items: flex-start; text-align: left; flex-direction: row; gap: 0.6rem; }
+}
+
+
+/* ── Booking call-to-action ───────────────────────────────────────────────
+   Desktop: a sticky panel beside the profile, so "Book" stays reachable
+   however far the patient scrolls. Mobile: hidden here in favour of the
+   pinned bottom bar below. */
+.docprof__cta {
+    position: sticky;
+    top: 1rem;
+    border: 1px solid var(--accent);
+    border-radius: var(--radius-lg);
+    background: var(--bg-card);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+}
+
+.docprof__cta-inner { padding: 1.25rem; }
+
+.docprof__cta-fee {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    margin-bottom: 0.875rem;
+    padding-bottom: 0.875rem;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.docprof__cta-fee-amount { font-size: 1.375rem; font-weight: 700; color: var(--text-primary); }
+.docprof__cta-fee-label  { font-size: 0.75rem; color: var(--text-muted); }
+
+.docprof__cta-actions { display: flex; flex-direction: column; gap: 0.5rem; }
+
+/* The CTA owns its button's width — callers just pass a plain button. */
+.docprof__cta-actions .btn {
+    width: 100%;
+    min-height: 46px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    justify-content: center;
+}
+
+.docprof__cta-note {
+    margin: 0.75rem 0 0;
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    color: var(--text-muted);
+    /* Previously this ran off the edge of the hero. */
+    overflow-wrap: anywhere;
+}
+
+/* ── Sparse-profile note ── */
+.docprof__note {
+    border-style: dashed;
+    background: var(--bg-subtle);
+}
+.docprof__note p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.docprof__pill--ok { background: var(--color-success-light); color: var(--color-success-dark); }
+
+.docprof__row-value a { color: var(--text-link); text-decoration: none; }
+.docprof__row-value a:hover { text-decoration: underline; }
+.docprof__loc-phone a { color: var(--text-link); text-decoration: none; }
+
+/* ── Mobile pinned action bar ── */
+.docprof__mobile-cta { display: none; }
+
+@media (max-width: 1024px) {
+    /* Above the fold on tablet: the CTA leads, the rest follows. */
+    .docprof__cta { position: static; order: -1; }
+}
+
+@media (max-width: 768px) {
+    /* The sticky panel is replaced by the pinned bar, so drop it here. */
+    .docprof__cta { display: none; }
+
+    .docprof__mobile-cta {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 40;
+        padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom, 0px));
+        background: var(--bg-card);
+        border-top: 1px solid var(--border-default);
+        box-shadow: 0 -4px 16px rgb(0 0 0 / 0.10);
+    }
+
+    .docprof__mobile-cta-fee {
+        font-weight: 700;
+        color: var(--text-primary);
+        font-size: 0.9375rem;
+        white-space: nowrap;
+    }
+
+    .docprof__mobile-cta-action { flex: 1; }
+
+    .docprof__mobile-cta .btn {
+        width: 100%;
+        min-height: 46px;
+        font-weight: 600;
+        justify-content: center;
+    }
+
+    /* Keep the last card clear of the pinned bar. */
+    .docprof { padding-bottom: 5.5rem; }
 }

@@ -77,17 +77,13 @@ export default function DoctorPublicProfile() {
                 doctor={doctor}
                 variant="public"
                 actions={
-                    <>
-                        <button className="btn btn-primary" onClick={onBookClick}>
-                            {t('findDoctors.booking.cta')}
-                        </button>
-                        <p className="docprof__cta-hint">
-                            {isAuthenticated && userType === 'patient'
-                                ? t('findDoctors.booking.hintLoggedIn')
-                                : t('findDoctors.booking.hintAnon')}
-                        </p>
-                    </>
+                    <button className="btn btn-primary" onClick={onBookClick}>
+                        {t('findDoctors.booking.cta')}
+                    </button>
                 }
+                actionsNote={isAuthenticated && userType === 'patient'
+                    ? t('findDoctors.booking.hintLoggedIn')
+                    : t('findDoctors.booking.hintAnon')}
             />
 
             <RequestAppointmentModal

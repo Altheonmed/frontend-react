@@ -80,7 +80,7 @@ describe('DoctorPublicProfile', () => {
     it('redirects anonymous users to login when booking', async () => {
         renderProfile();
         await screen.findByText('Dr. Jane Doe');
-        fireEvent.click(screen.getByText('findDoctors.booking.cta'));
+        fireEvent.click(screen.getAllByText('findDoctors.booking.cta')[0]);
         // No modal for anon — they are routed to the login page instead.
         expect(screen.getByTestId('login-page')).toBeInTheDocument();
         expect(screen.queryByTestId('booking-modal')).not.toBeInTheDocument();
@@ -91,7 +91,7 @@ describe('DoctorPublicProfile', () => {
         authState.userType = 'patient';
         renderProfile();
         await screen.findByText('Dr. Jane Doe');
-        fireEvent.click(screen.getByText('findDoctors.booking.cta'));
+        fireEvent.click(screen.getAllByText('findDoctors.booking.cta')[0]);
         expect(screen.getByTestId('booking-modal')).toBeInTheDocument();
     });
 });
