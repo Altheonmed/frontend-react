@@ -50,6 +50,12 @@ export default function FindDoctors() {
     const [searchMode, setSearchMode] = useState<'near_me' | 'online'>('near_me');
     const online = searchMode === 'online';
     const [specialty, setSpecialty] = useState('');
+    // Profile-driven filters (Phase 3). Free text because insurer and service
+    // names are doctor-entered; the backend matches case-insensitively.
+    const [insurance, setInsurance] = useState('');
+    const [language, setLanguage] = useState('');
+    const [service, setService] = useState('');
+    const [acceptingPatients, setAcceptingPatients] = useState(false);
     const [placeQuery, setPlaceQuery] = useState('');
     const [recenterTo, setRecenterTo] = useState<[number, number] | null>(null);
     const [viewport, setViewport] = useState<MapBounds | null>(null);
@@ -79,16 +85,24 @@ export default function FindDoctors() {
     // ── List results ────────────────────────────────────────────────────────
     // Online mode: no location params → backend returns ALL doctors (global).
     // Near-me mode: distance search when origin set, else text search.
+    const profileFilters = useMemo(() => ({
+        insurance: insurance.trim() || undefined,
+        language: language.trim() || undefined,
+        service: service.trim() || undefined,
+        accepting_new_patients: acceptingPatients || undefined,
+    }), [insurance, language, service, acceptingPatients]);
+
     const listParams = useMemo(() => (
         online
-            ? { specialty: specialty || undefined }
+            ? { specialty: specialty || undefined, ...profileFilters }
             : {
                 lat: origin?.lat,
                 lng: origin?.lng,
                 radius_km: origin ? radius : undefined,
                 specialty: specialty || undefined,
+                ...profileFilters,
             }
-    ), [online, origin, radius, specialty]);
+    ), [online, origin, radius, specialty, profileFilters]);
 
     const { data: listData, isLoading: listLoading, isError: listError } = useQuery({
         queryKey: queryKeys.locator.search(listParams),
@@ -251,6 +265,39 @@ export default function FindDoctors() {
                             {RADII.map(r => <option key={r} value={r}>{t('findDoctors.withinKm', { km: r })}</option>)}
                         </select>
                     )}
+
+                    <input
+                        type="text"
+                        className="locator__filter-input"
+                        value={insurance}
+                        onChange={(e) => setInsurance(e.target.value)}
+                        placeholder={t('findDoctors.filters.insurance')}
+                        aria-label={t('findDoctors.filters.insurance')}
+                    />
+                    <input
+                        type="text"
+                        className="locator__filter-input"
+                        value={service}
+                        onChange={(e) => setService(e.target.value)}
+                        placeholder={t('findDoctors.filters.service')}
+                        aria-label={t('findDoctors.filters.service')}
+                    />
+                    <input
+                        type="text"
+                        className="locator__filter-input"
+                        value={language}
+                        onChange={(e) => setLanguage(e.target.value)}
+                        placeholder={t('findDoctors.filters.language')}
+                        aria-label={t('findDoctors.filters.language')}
+                    />
+                    <label className="locator__filter-toggle">
+                        <input
+                            type="checkbox"
+                            checked={acceptingPatients}
+                            onChange={(e) => setAcceptingPatients(e.target.checked)}
+                        />
+                        {t('findDoctors.filters.acceptingNewPatients')}
+                    </label>
                 </div>
             </div>
 

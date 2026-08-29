@@ -83,4 +83,16 @@ export const queryKeys = {
         publicProfile: (id: number) => ['locator', 'public-profile', id] as const,
         myLocations: () => ['locator', 'my-locations'] as const,
     },
+    // Doctor professional profile (public / patient / colleague views + own lists)
+    doctorProfile: {
+        public: (id: number) => ['doctor-profile', 'public', id] as const,
+        patient: (id: number) => ['doctor-profile', 'patient', id] as const,
+        colleague: (id: number) => ['doctor-profile', 'colleague', id] as const,
+        colleagues: (params: object) => ['doctor-profile', 'colleagues', params] as const,
+        completeness: () => ['doctor-profile', 'completeness'] as const,
+        qualifications: () => ['doctor-profile', 'qualifications'] as const,
+        experiences: () => ['doctor-profile', 'experiences'] as const,
+        services: () => ['doctor-profile', 'services'] as const,
+        insurances: () => ['doctor-profile', 'insurances'] as const,
+    },
 } as const;

@@ -1,0 +1,85 @@
+.docpicker__filters {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1.5fr) auto;
+    gap: 0.6rem;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.docpicker__toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    cursor: pointer;
+    margin: 0;
+}
+
+.docpicker__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-height: 55vh;
+    overflow-y: auto;
+}
+
+.docpicker__row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    background: var(--bg-card);
+}
+
+.docpicker__row-body { flex: 1; min-width: 0; }
+.docpicker__row-name { font-weight: 600; color: var(--text-primary); overflow-wrap: anywhere; }
+
+.docpicker__row-meta {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+}
+
+.docpicker__closed {
+    padding: 0.05rem 0.4rem;
+    border-radius: var(--radius-sm);
+    background: var(--color-warning-light);
+    color: var(--color-warning-dark);
+    font-size: 0.6875rem;
+    font-weight: 600;
+}
+
+.docpicker__row-actions { display: flex; gap: 0.4rem; flex-shrink: 0; }
+
+.docpicker__footer { display: flex; justify-content: space-between; gap: 0.5rem; width: 100%; }
+
+.docpicker__loading,
+.docpicker__empty {
+    padding: 2rem 1rem;
+    text-align: center;
+    color: var(--text-muted);
+}
+
+.docpicker__empty p { margin: 0 0 0.35rem; }
+.docpicker__empty-hint { font-size: 0.8125rem; }
+
+@media (max-width: 768px) {
+    .docpicker__filters { grid-template-columns: minmax(0, 1fr); }
+
+    .docpicker__row { flex-wrap: wrap; }
+    .docpicker__row-actions { width: 100%; }
+    /* Full-width targets so both actions clear the 44px minimum on mobile. */
+    .docpicker__row-actions .btn { flex: 1; min-height: 44px; }
+    .docpicker__footer { flex-direction: column-reverse; }
+    .docpicker__footer .btn { width: 100%; min-height: 44px; }
+}
