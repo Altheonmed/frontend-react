@@ -1,0 +1,324 @@
+/* Shared doctor profile — used by the public, patient and colleague surfaces.
+   Tokens only; no hard-coded colours, so it follows the app's light/dark theme. */
+
+.docprof {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* ── Hero ── */
+.docprof__hero {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    padding: 1.5rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xs);
+}
+
+.docprof__hero-body { flex: 1; min-width: 0; }
+
+.docprof__hero-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+.docprof__name {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
+    /* Long names must wrap rather than push the layout wide. */
+    overflow-wrap: anywhere;
+}
+
+.docprof__title {
+    margin: 0.25rem 0 0;
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.9375rem;
+}
+
+.docprof__specialty {
+    margin: 0.15rem 0 0;
+    color: var(--text-muted);
+    font-size: 0.9375rem;
+}
+
+.docprof__badges,
+.docprof__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.75rem;
+}
+
+.docprof__pill {
+    padding: 0.25rem 0.625rem;
+    border-radius: var(--radius-pill);
+    background: var(--bg-muted);
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.docprof__pill--accent { background: var(--accent-lighter); color: var(--accent); }
+.docprof__pill--muted  { background: var(--bg-subtle); color: var(--text-muted); }
+
+.docprof__tag {
+    padding: 0.2rem 0.55rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+/* ── Two-column grid ── */
+.docprof__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+}
+
+.docprof__col {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-width: 0;
+}
+
+/* ── Cards ── */
+.docprof__card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    box-shadow: var(--shadow-xs);
+}
+
+.docprof__card-title {
+    margin: 0 0 0.875rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.docprof__count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.375rem;
+    height: 1.375rem;
+    padding: 0 0.375rem;
+    border-radius: var(--radius-pill);
+    background: var(--bg-muted);
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.docprof__empty {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    font-style: italic;
+}
+
+.docprof__bio {
+    margin: 0 0 0.5rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+/* ── Rows ── */
+.docprof__row {
+    display: grid;
+    grid-template-columns: 8.5rem minmax(0, 1fr);
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border-subtle);
+}
+.docprof__row:last-child { border-bottom: none; }
+
+.docprof__row-label {
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    font-weight: 700;
+}
+
+.docprof__row-value {
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    overflow-wrap: anywhere;
+}
+
+/* ── List items ── */
+.docprof__item {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-subtle);
+}
+.docprof__item:last-child { border-bottom: none; padding-bottom: 0; }
+.docprof__item:first-of-type { padding-top: 0; }
+
+.docprof__item-head {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.docprof__item-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    overflow-wrap: anywhere;
+}
+
+.docprof__item-meta,
+.docprof__item-dates {
+    margin-top: 0.2rem;
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+}
+
+.docprof__item-desc {
+    margin: 0.35rem 0 0;
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.docprof__badge {
+    padding: 0.1rem 0.45rem;
+    border-radius: var(--radius-sm);
+    background: var(--bg-subtle);
+    color: var(--text-muted);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.docprof__badge--ok {
+    background: var(--color-success-light);
+    color: var(--color-success-dark);
+}
+
+/* ── Services ── */
+.docprof__services { list-style: none; margin: 0; padding: 0; }
+
+.docprof__service {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-subtle);
+}
+.docprof__service:last-child { border-bottom: none; padding-bottom: 0; }
+.docprof__service:first-child { padding-top: 0; }
+
+.docprof__service-main { min-width: 0; }
+
+.docprof__service-side {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.15rem;
+    flex-shrink: 0;
+    text-align: right;
+}
+
+.docprof__fee { font-weight: 700; color: var(--text-primary); font-size: 0.875rem; white-space: nowrap; }
+.docprof__fee--ask { font-weight: 500; color: var(--text-muted); font-style: italic; }
+.docprof__duration { font-size: 0.75rem; color: var(--text-muted); white-space: nowrap; }
+
+/* ── Insurance chips ── */
+.docprof__chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+.docprof__chip {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.35rem;
+    padding: 0.3rem 0.65rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-pill);
+    background: var(--bg-subtle);
+    font-size: 0.8125rem;
+    color: var(--text-primary);
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+
+.docprof__chip-plans { font-style: normal; color: var(--text-muted); font-size: 0.75rem; }
+
+.docprof__disclaimer {
+    margin: 0.75rem 0 0;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+/* ── Locations ── */
+.docprof__loc {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-subtle);
+}
+.docprof__loc:last-child { border-bottom: none; padding-bottom: 0; }
+.docprof__loc:first-of-type { padding-top: 0; }
+
+.docprof__loc-name { margin: 0; font-weight: 600; color: var(--text-primary); }
+.docprof__star { margin-left: 0.4rem; color: var(--accent); font-size: 0.75rem; font-weight: 600; }
+.docprof__loc-addr { margin-top: 0.15rem; font-size: 0.8125rem; color: var(--text-muted); overflow-wrap: anywhere; }
+.docprof__loc-phone { margin-top: 0.15rem; font-size: 0.8125rem; color: var(--text-secondary); }
+.docprof__loc .btn { margin-top: 0.5rem; }
+
+.docprof__map {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border-subtle);
+}
+
+/* ── Compact (referral picker drawer) ── */
+.docprof--compact .docprof__grid { grid-template-columns: minmax(0, 1fr); }
+.docprof--compact .docprof__hero { padding: 1rem; }
+.docprof--compact .docprof__card { padding: 1rem; }
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+    .docprof__grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 768px) {
+    .docprof__hero {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 1.25rem 1rem;
+    }
+    .docprof__hero-actions { width: 100%; }
+    /* Touch targets must clear 44px on mobile — btn-sm/btn-xs do not by default. */
+    .docprof__hero-actions .btn { width: 100%; min-height: 44px; }
+    .docprof__loc .btn { min-height: 44px; padding-inline: 0.9rem; }
+    .docprof__badges, .docprof__tags { justify-content: center; }
+
+    /* Stack label above value so long values are not squeezed into a narrow column. */
+    .docprof__row { grid-template-columns: minmax(0, 1fr); gap: 0.15rem; }
+
+    .docprof__service { flex-direction: column; gap: 0.35rem; }
+    .docprof__service-side { align-items: flex-start; text-align: left; flex-direction: row; gap: 0.6rem; }
+}

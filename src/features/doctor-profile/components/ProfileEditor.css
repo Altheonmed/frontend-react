@@ -1,0 +1,182 @@
+/* Doctor-side profile editing: completeness meter, tag input, list editors. */
+
+/* ── Completeness meter ── */
+.completeness {
+    padding: 1rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    background: var(--bg-subtle);
+    margin-bottom: 1.25rem;
+}
+
+.completeness__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.5rem;
+}
+
+.completeness__label { font-weight: 600; color: var(--text-primary); font-size: 0.875rem; }
+.completeness__pct { font-weight: 700; color: var(--text-primary); }
+
+.completeness__bar {
+    margin-top: 0.5rem;
+    height: 8px;
+    border-radius: var(--radius-pill);
+    background: var(--bg-muted);
+    overflow: hidden;
+}
+
+.completeness__fill {
+    height: 100%;
+    border-radius: var(--radius-pill);
+    transition: width 240ms ease;
+    background: var(--accent);
+}
+
+.completeness--low  .completeness__fill { background: var(--color-danger); }
+.completeness--warn .completeness__fill { background: var(--color-warning); }
+.completeness--ok   .completeness__fill { background: var(--color-success); }
+
+.completeness__missing,
+.completeness__gate {
+    margin: 0.5rem 0 0;
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    line-height: 1.45;
+}
+
+.completeness__publish { margin-top: 0.75rem; }
+.completeness--compact { margin-bottom: 0; }
+
+/* ── Tag input ── */
+.taginput__chips { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.4rem; }
+
+.taginput__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.2rem 0.4rem 0.2rem 0.6rem;
+    border-radius: var(--radius-pill);
+    background: var(--accent-lighter);
+    color: var(--accent);
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
+.taginput__remove {
+    border: none;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+    padding: 0 0.15rem;
+    /* Comfortable hit area without inflating the chip. */
+    min-width: 20px;
+    min-height: 20px;
+}
+
+.taginput__remove:hover { color: var(--color-danger); }
+
+/* ── List editors ── */
+.profedit__block {
+    padding-top: 1.25rem;
+    margin-top: 1.25rem;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.profedit__note,
+.profedit__preview { font-size: 0.8125rem; color: var(--text-muted); margin: 0 0 0.75rem; }
+
+.proflist {
+    padding-top: 1.25rem;
+    margin-top: 1.25rem;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.proflist__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.proflist__title { margin: 0; font-size: 0.9375rem; font-weight: 700; color: var(--text-primary); }
+.proflist__empty { margin: 0; color: var(--text-muted); font-size: 0.875rem; font-style: italic; }
+
+.proflist__items { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+
+.proflist__item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.625rem 0.75rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    background: var(--bg-card);
+}
+
+.proflist__item-body { flex: 1; min-width: 0; }
+.proflist__item-title { font-weight: 600; color: var(--text-primary); overflow-wrap: anywhere; }
+
+.proflist__item-meta {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+}
+
+.proflist__flag {
+    padding: 0.05rem 0.4rem;
+    border-radius: var(--radius-sm);
+    background: var(--bg-muted);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.proflist__item-actions { display: flex; gap: 0.35rem; flex-shrink: 0; }
+
+.proflist__form {
+    margin-top: 0.75rem;
+    padding: 1rem;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-md);
+    background: var(--bg-subtle);
+}
+
+.proflist__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }
+.proflist__grid > .form-group { grid-column: 1 / -1; }
+.proflist__grid > .proflist__half { grid-column: span 1; }
+
+.proflist__check {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    margin: 0 0 0.4rem;
+}
+
+.proflist__form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 0.875rem;
+}
+
+@media (max-width: 768px) {
+    .proflist__grid { grid-template-columns: minmax(0, 1fr); }
+    .proflist__grid > .proflist__half { grid-column: 1 / -1; }
+
+    .proflist__head { flex-direction: column; align-items: stretch; }
+    .proflist__item { flex-wrap: wrap; }
+    .proflist__item-actions { width: 100%; }
+    .proflist__item-actions .btn { flex: 1; min-height: 44px; }
+    .proflist__form-actions .btn { flex: 1; min-height: 44px; }
+}

@@ -10,6 +10,7 @@ import { queryKeys } from '../../../shared/queryKeys';
 import { StatusBadge } from '../../../shared/components/StatusBadge';
 import { Avatar } from '../../../shared/components/Avatar';
 import { toast, Dialog } from '../../../shared/components/ui';
+import ProfileNudgeCard from '../../doctor-profile/components/ProfileNudgeCard';
 import type { LabResult } from '../../../shared/types';
 import { usePageTitle } from '../../../shared/hooks/usePageTitle';
 import { useFormatDateTime } from '../../../shared/hooks/useUserTimezone';
@@ -184,6 +185,9 @@ function Dashboard() {
                     <div className="db-date">{todayStr}</div>
                 </div>
             </div>
+
+            {/* ── Public profile completeness nudge ── */}
+            <ProfileNudgeCard />
 
             {/* ── Vital alerts banner ── */}
             {!vitalAlertDismissed && (stats?.vital_alert_patients ?? 0) > 0 && (() => {

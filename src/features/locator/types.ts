@@ -101,6 +101,12 @@ export interface DoctorSearchParams {
     sort?: 'distance' | 'name';
     page?: number;
     page_size?: number;
+    // Profile-driven filters (free text; matched case-insensitively server-side).
+    insurance?: string;
+    language?: string;
+    service?: string;
+    accepting_new_patients?: boolean;
+    telemedicine?: boolean;
 }
 
 export interface MapBoundsParams {

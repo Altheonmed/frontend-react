@@ -458,3 +458,41 @@
     .docprofile__hero { flex-direction: column; text-align: center; }
     .docprofile__info-row { grid-template-columns: 1fr; gap: 0.15rem; }
 }
+
+/* The profile page's "back to search" control is a btn-sm; on touch viewports
+   it must still clear the 44px minimum target size. */
+@media (max-width: 768px) {
+    .docprofile__back { min-height: 44px; padding-inline: 1rem; }
+}
+
+/* Profile-driven filters (insurance / service / language / accepting patients).
+   They sit in the same wrap row as the specialty + radius selects. */
+.locator__filter-input {
+    min-width: 0;
+    flex: 1 1 10rem;
+    padding: 0.45rem 0.65rem;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-md);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    font-size: 0.875rem;
+}
+
+.locator__filter-input::placeholder { color: var(--text-muted); }
+
+.locator__filter-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    cursor: pointer;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    /* One control per row on phones — three text inputs side by side are unusable. */
+    .locator__filter-input { flex: 1 1 100%; min-height: 44px; }
+    .locator__filter-toggle { flex: 1 1 100%; min-height: 44px; }
+}

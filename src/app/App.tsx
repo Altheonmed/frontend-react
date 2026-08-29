@@ -65,6 +65,9 @@ const PatientDoctorProfile = lazy(() => import('../features/patient-portal/compo
 const PatientAccessPermission = lazy(() => import('../features/patient-portal/components/PatientAccessPermission'));
 const FindDoctors          = lazy(() => import('../features/locator/pages/FindDoctors'));
 const DoctorPublicProfile  = lazy(() => import('../features/locator/pages/DoctorPublicProfile'));
+const DoctorDirectory      = lazy(() => import('../features/doctor-profile/pages/DoctorDirectory'));
+const ColleagueDoctorProfile = lazy(() => import('../features/doctor-profile/pages/ColleagueDoctorProfile'));
+const ProfileSetupWizard   = lazy(() => import('../features/doctor-profile/pages/ProfileSetupWizard'));
 
 import PrivateRoutes from '../shared/components/PrivateRoutes';
 import PageLoader from '../shared/components/PageLoader';
@@ -281,6 +284,10 @@ function App() {
                             <Route path="/referrals"           element={<ErrorBoundary resetKey={location.pathname}><ReferralsList /></ErrorBoundary>} />
                             <Route path="/notebook"            element={<ErrorBoundary resetKey={location.pathname}><PrivateNotebook /></ErrorBoundary>} />
                             <Route path="/settings"            element={<ErrorBoundary resetKey={location.pathname}><DoctorSettings /></ErrorBoundary>} />
+                            {/* Doctor profile — colleague directory, colleague profile, setup wizard */}
+                            <Route path="/doctors"             element={<ErrorBoundary resetKey={location.pathname}><DoctorDirectory /></ErrorBoundary>} />
+                            <Route path="/doctors/:id"         element={<ErrorBoundary resetKey={location.pathname}><ColleagueDoctorProfile /></ErrorBoundary>} />
+                            <Route path="/profile/setup"       element={<ErrorBoundary resetKey={location.pathname}><ProfileSetupWizard /></ErrorBoundary>} />
                             {/* Legacy profile routes now consolidated into /settings */}
                             <Route path="/profile"             element={<Navigate to="/settings" replace />} />
                             <Route path="/edit-profile"        element={<Navigate to="/settings" replace />} />

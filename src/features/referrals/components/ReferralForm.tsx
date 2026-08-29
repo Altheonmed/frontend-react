@@ -4,6 +4,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '../../auth/hooks/useAuth';
 import { type DoctorProfile } from '../../../shared/types';
+import DoctorPicker from '../../doctor-profile/components/DoctorPicker';
+import type { ColleagueSummary } from '../../doctor-profile/types';
 import { Drawer, toast, parseApiError } from '../../../shared/components/ui';
 import { createReferral, updateReferral, submitDraft } from '../services/referralService';
 import { referralSchema, type ReferralFormData, SPECIALTY_VALUES } from '../referralSchema';
@@ -57,6 +59,10 @@ const ReferralForm = ({
     const [acceptingOnly, setAcceptingOnly] = useState(true);
     const [attachmentFiles, setAttachmentFiles] = useState<File[]>([]);
     const [specialtyAutoFilled, setSpecialtyAutoFilled] = useState(false);
+    const [pickerOpen, setPickerOpen] = useState(false);
+    // Name of the doctor chosen through the picker. Kept alongside the id so
+    // the summary row can render without waiting for the list query.
+    const [pickedDoctor, setPickedDoctor] = useState<ColleagueSummary | null>(null);
 
     const isEditing     = !!referralToEdit;
     const isDraftEdit   = referralToEdit?.status === 'draft';
@@ -127,6 +133,18 @@ const ReferralForm = ({
             }
         }
     }, [watchedReferredTo, doctors, setValue]);
+
+    // Picking a colleague sets the destination and pre-fills the requested
+    // specialty from their profile, mirroring the old select's auto-fill.
+    const handleDoctorPicked = (doctor: ColleagueSummary) => {
+        setPickedDoctor(doctor);
+        setValue('referred_to', doctor.id, { shouldDirty: true, shouldValidate: true });
+        const sp = doctor.specialty as typeof SPECIALTY_VALUES[number];
+        if (sp && SPECIALTY_VALUES.includes(sp)) {
+            setValue('specialty_requested', sp, { shouldDirty: false });
+            setSpecialtyAutoFilled(true);
+        }
+    };
 
     // Clear auto-fill indicator when user manually changes specialty
     const handleSpecialtyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -317,19 +335,38 @@ const ReferralForm = ({
                             </div>
 
                             <div className="form-group">
-                                <label htmlFor="referred_to">{t('referrals.form.doctor_label')}</label>
-                                <select
-                                    id="referred_to"
-                                    className="select-input"
-                                    {...register('referred_to', { setValueAs: (v: string) => v === '' ? null : Number(v) })}
-                                >
-                                    <option value="">{t('referrals.form.select_doctor')}</option>
-                                    {doctors.map(doctor => (
-                                        <option key={doctor.id} value={doctor.id}>
-                                            Dr. {doctor.full_name} - {t(`specialties.${doctor.specialty ?? 'general_practice'}`, SPECIALTY_LABELS[doctor.specialty ?? ''] ?? doctor.specialty ?? 'General')}
-                                        </option>
-                                    ))}
-                                </select>
+                                <label>{t('referrals.form.doctor_label')}</label>
+                                {(() => {
+                                    const selected = pickedDoctor?.id === watchedReferredTo
+                                        ? pickedDoctor
+                                        : doctors.find(d => d.id === watchedReferredTo);
+                                    return selected ? (
+                                        <div className="referral-picked">
+                                            <div className="referral-picked__body">
+                                                <div className="referral-picked__name">Dr. {selected.full_name}</div>
+                                                <div className="referral-picked__meta">
+                                                    {t(`specialties.${selected.specialty ?? 'general_practice'}`,
+                                                       SPECIALTY_LABELS[selected.specialty ?? ''] ?? selected.specialty ?? 'General')}
+                                                </div>
+                                            </div>
+                                            <div className="referral-picked__actions">
+                                                <button type="button" className="btn btn-secondary btn-sm"
+                                                        onClick={() => setPickerOpen(true)}>
+                                                    {t('referrals.form.change_doctor')}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <button
+                                            type="button"
+                                            className="btn btn-secondary referral-picked__choose"
+                                            onClick={() => setPickerOpen(true)}
+                                        >
+                                            {t('referrals.form.choose_doctor')}
+                                        </button>
+                                    );
+                                })()}
+                                <small className="form-hint">{t('referrals.form.picker_hint')}</small>
                                 {errors.referred_to && <span className="field-error">{errors.referred_to.message}</span>}
                             </div>
                         </>
@@ -461,6 +498,13 @@ const ReferralForm = ({
                 )}
 
             </form>
+
+            <DoctorPicker
+                open={pickerOpen}
+                onClose={() => setPickerOpen(false)}
+                onSelect={handleDoctorPicked}
+                initialSpecialty={specialtyFilter}
+            />
         </Drawer>
     );
 };

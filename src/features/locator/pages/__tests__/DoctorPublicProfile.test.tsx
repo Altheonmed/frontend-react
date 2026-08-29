@@ -24,8 +24,8 @@ const { getPublicProfile, authState } = vi.hoisted(() => ({
     getPublicProfile: vi.fn(),
     authState: { isAuthenticated: false, userType: null as string | null },
 }));
-vi.mock('../../services/locatorService', () => ({
-    locatorService: { getPublicProfile },
+vi.mock('../../../doctor-profile/services/doctorProfileService', () => ({
+    doctorProfileService: { getPublicProfile },
 }));
 
 vi.mock('../../../patient-portal/services/patientPortalService', () => ({
@@ -37,13 +37,17 @@ vi.mock('../../../auth/hooks/useAuth', () => ({
 }));
 
 import DoctorPublicProfile from '../DoctorPublicProfile';
+import { normalizeDoctorProfile } from '../../../doctor-profile/types';
 
-const PROFILE = {
+// The service normalises before returning, so the mock resolves a normalised
+// object -- built with the real normaliser so the shape cannot drift.
+const PROFILE = normalizeDoctorProfile({
     id: 9, full_name: 'Dr. Jane Doe', specialty: 'cardiology', specialty_display: 'Cardiology',
     accepting_referrals: true, next_available: null, consultation_fee: null, currency: null,
     timezone: 'UTC', languages: ['en'],
+    qualifications: [], experiences: [], services: [], insurances: [],
     locations: [{ id: 1, label: 'Main', full_address: '1 Rd, London', latitude: 51.5, longitude: -0.12, is_primary: true, phone: '', accepts_in_person: true }],
-};
+});
 
 function renderProfile() {
     const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
