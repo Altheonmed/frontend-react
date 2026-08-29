@@ -105,6 +105,7 @@ export function DoctorBottomNav() {
             {/* More drawer */}
             {moreOpen && (
                 <div className="doctor-more-drawer" role="dialog" aria-label={t('doctor_nav.more_options')}>
+                    <NavLink to="/doctors"   className="more-drawer-item" onClick={closeAll}>{Icons.profile}  {t('nav.doctors')}</NavLink>
                     <NavLink to="/my-stats"  className="more-drawer-item" onClick={closeAll}>{Icons.stats}   {t('nav.stats')}</NavLink>
                     <NavLink to="/notebook"  className="more-drawer-item" onClick={closeAll}>{Icons.notebook} {t('nav.notebook')}</NavLink>
                     <NavLink to="/settings"  className="more-drawer-item" onClick={closeAll}>{Icons.profile}  {t('nav.settings')}</NavLink>

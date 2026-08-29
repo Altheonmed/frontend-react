@@ -7,6 +7,7 @@ import Avatar from '../../../shared/components/Avatar';
 import { PageHeader } from '../../../shared/components/PageHeader';
 import { SectionCard, TabSkeleton } from '../../../shared/components/SectionCard';
 import { usePageTitle } from '../../../shared/hooks/usePageTitle';
+import { useAuth } from '../../auth/hooks/useAuth';
 import { queryKeys } from '../../../shared/queryKeys';
 import { SPECIALTY_VALUES } from '../../referrals/referralSchema';
 import { doctorProfileService } from '../services/doctorProfileService';
@@ -16,6 +17,7 @@ import '../components/DoctorPicker.css';
 export default function DoctorDirectory() {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const { profile } = useAuth();
     usePageTitle(t('doctorDirectory.title'));
 
     const [search, setSearch] = useState('');
@@ -31,8 +33,9 @@ export default function DoctorDirectory() {
 
     const filtered = useMemo(() => {
         const term = search.trim().toLowerCase();
-        return term ? doctors.filter(d => d.full_name.toLowerCase().includes(term)) : doctors;
-    }, [doctors, search]);
+        const others = doctors.filter(d => d.id !== profile?.id);
+        return term ? others.filter(d => d.full_name.toLowerCase().includes(term)) : others;
+    }, [doctors, search, profile?.id]);
 
     return (
         <>

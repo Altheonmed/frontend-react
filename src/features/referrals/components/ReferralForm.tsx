@@ -53,7 +53,7 @@ const ReferralForm = ({
     patientId, onSuccess, onClose, referralToEdit, sourceEncounterId,
 }: ReferralFormProps) => {
     const { t } = useTranslation();
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, profile } = useAuth();
     const [doctors, setDoctors] = useState<DoctorProfile[]>([]);
     const [specialtyFilter, setSpecialtyFilter] = useState('');
     const [acceptingOnly, setAcceptingOnly] = useState(true);
@@ -504,6 +504,7 @@ const ReferralForm = ({
                 onClose={() => setPickerOpen(false)}
                 onSelect={handleDoctorPicked}
                 initialSpecialty={specialtyFilter}
+                excludeId={profile?.id}
             />
         </Drawer>
     );

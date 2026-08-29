@@ -28,6 +28,7 @@ const NAV_LINKS: Array<{
     { to: '/patients',     icon: 'patients',     labelKey: 'nav.patients',     label: 'Patients' },
     { to: '/appointments', icon: 'appointments', labelKey: 'nav.appointments', label: 'Appointments', badgeKey: 'appointments' },
     { to: '/referrals',    icon: 'referrals',    labelKey: 'nav.referrals',    label: 'Referrals',    badgeKey: 'referrals' },
+    { to: '/doctors',      icon: 'profile',      labelKey: 'nav.doctors',      label: 'Doctors' },
     { to: '/notebook',     icon: 'notebook',     labelKey: 'nav.notebook',     label: 'Notebook' },
     { to: '/my-stats',     icon: 'stats',        labelKey: 'nav.stats',        label: 'My Stats' },
 ];
